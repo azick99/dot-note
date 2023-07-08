@@ -3,6 +3,10 @@ export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
+      fontSize: {
+        lsm: ['0.9375rem', '1.375rem'],
+
+      },
       fontFamily: {
         sans: ['Roboto', 'sans-serif'],
         serif: ['Libre Baskerville', 'serif'],
