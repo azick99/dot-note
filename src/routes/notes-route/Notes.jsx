@@ -1,7 +1,7 @@
 import Header from './Header'
 import RenderingSection from './RenderingSection'
 
-const MainSection = () => {
+const Notes = () => {
   return (
     <div className="flex flex-col flex-grow">
       <Header />
@@ -10,4 +10,4 @@ const MainSection = () => {
   )
 }
 
-export default MainSection
+export default Notes

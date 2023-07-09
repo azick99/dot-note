@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router-dom'
+import { Link, Outlet } from 'react-router-dom'
 import ChangableNavDirectory from '../../components/navComponents/ChangableNavDirectory'
 import StableNavDirectory from '../../components/navComponents/StableNavDirectory'
 import { FcHome, FcUpload, FcEmptyTrash } from 'react-icons/fc'
@@ -24,26 +24,26 @@ const SideNavigation = () => {
         <ul className="directory">
           <li className="pl-6 py-2">Teamspaces</li>
           {/*if costum css exist they come first and can find in index.css */}
-          <li className="li-directory flex items-center gap-2 pl-1 ">
+          <Link to='/general' className="li-directory flex items-center gap-2 pl-1 ">
             <span className="bg-light-grayish/30 rounded-md w-5 h-5 flex items-center justify-center">
               <FcHome />
             </span>
             <span>General</span>
-          </li>
+          </Link>
           <ChangableNavDirectory />
         </ul>
 
         <hr />
 
         <ul className="directory">
-          <li className="li-directory flex items-center gap-2">
+          <Link to='/uploaded' className="li-directory flex items-center gap-2">
             <FcUpload />
             <span>Uploaded</span>
-          </li>
-          <li className="li-directory flex items-center gap-2">
+          </Link>
+          <Link to='/trash' className="li-directory flex items-center gap-2">
             <FcEmptyTrash />
             <span>Trash</span>
-          </li>
+          </Link>
         </ul>
       </nav>
       <Outlet/>

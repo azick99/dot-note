@@ -9,11 +9,11 @@
     }
 
     h1 {
-        @apply md:text-lg sm:text-[1.0625rem] md:leading-[1.625rem] text-base
+        @apply md:text-lg sm:text-[1.0625rem] md:leading-[1.625rem] text-base font-bold
     }
 
     h2 {
-        @apply md:text-xl sm:text-[1.1875rem] md:leading-[1.625rem] text-lg
+        @apply md:text-xl sm:text-[1.1875rem] md:leading-[1.625rem] text-lg font-bold
     }
 }
 
