@@ -1,11 +1,11 @@
-import { Link, Outlet } from 'react-router-dom'
+import { NavLink, Outlet } from 'react-router-dom'
 import ChangableNavDirectory from '../../components/navComponents/ChangableNavDirectory'
 import StableNavDirectory from '../../components/navComponents/StableNavDirectory'
 import { FcHome, FcUpload, FcEmptyTrash } from 'react-icons/fc'
 
 const SideNavigation = () => {
   return (
-    <div className='flex'>
+    <div className="flex">
       <nav
         id="sidebar"
         className="w-[19em] h-screen bg-secondary flex flex-col py-5 gap-3 font-bold"
@@ -24,29 +24,35 @@ const SideNavigation = () => {
         <ul className="directory">
           <li className="pl-6 py-2">Teamspaces</li>
           {/*if costum css exist they come first and can find in index.css */}
-          <Link to='/general' className="li-directory flex items-center gap-2 pl-1 ">
+          <NavLink
+            to="/general"
+            className="li-directory flex items-center gap-2 pl-1 "
+          >
             <span className="bg-light-grayish/30 rounded-md w-5 h-5 flex items-center justify-center">
               <FcHome />
             </span>
             <span>General</span>
-          </Link>
+          </NavLink>
           <ChangableNavDirectory />
         </ul>
 
         <hr />
 
         <ul className="directory">
-          <Link to='/uploaded' className="li-directory flex items-center gap-2">
+          <NavLink
+            to="/uploaded"
+            className="li-directory flex items-center gap-2"
+          >
             <FcUpload />
             <span>Uploaded</span>
-          </Link>
-          <Link to='/trash' className="li-directory flex items-center gap-2">
+          </NavLink>
+          <NavLink to="/trash" className="li-directory flex items-center gap-2">
             <FcEmptyTrash />
             <span>Trash</span>
-          </Link>
+          </NavLink>
         </ul>
       </nav>
-      <Outlet/>
+      <Outlet />
     </div>
   )
 }

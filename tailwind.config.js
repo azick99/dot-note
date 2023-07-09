@@ -16,6 +16,7 @@ export default {
         secondary: '#EDEDED',
         'light-grayish':'#8F8F8F',
         'almost-dark':'#303030',
+        'light-blue':'#5CE1E6'
       },
     },
   },

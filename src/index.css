@@ -25,5 +25,8 @@
     @apply flex flex-col 
 }
 .li-directory{
-    @apply pl-6 py-2 hover:bg-light-grayish/20
+    @apply pl-6 py-2 hover:bg-light-grayish/20 hover:text-primery transition
+}
+ .li-directory.active{
+    @apply bg-light-grayish/40
 }
