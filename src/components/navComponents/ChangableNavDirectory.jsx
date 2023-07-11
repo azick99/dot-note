@@ -1,27 +1,27 @@
-import { directories } from '../../data/directories'
-import { Fragment, useState } from 'react'
+import { Fragment } from 'react'
 import { NavLink } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { AiFillFolderOpen, AiFillFolder, AiFillFileAdd } from 'react-icons/ai'
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons'
+import { useDispatch, useSelector } from 'react-redux'
+import {
+  selectAllDirectories,
+  setIsDirectoryDropdownOpen,
+} from '../../routes/root-nav-route/directoriesSlice'
 
 const ChangableNavDirectory = () => {
-  const [parentDirectories, setParentDirectories] = useState(directories)
+  const directories = useSelector(selectAllDirectories)
+  const dispatch = useDispatch()
 
   const handleDropdown = (directoryId) => {
-    setParentDirectories(
-      parentDirectories.map((directory) =>
-        directory.id === directoryId
-          ? { ...directory, isDirectoryOpen: !directory.isDirectoryOpen }
-          : directory
-      )
-    )
+    dispatch(setIsDirectoryDropdownOpen({ directoryId }))
   }
 
   return (
     <ul className="flex flex-col">
-      {parentDirectories.map((directory) => {
+      {directories.map((directory) => {
         let contentRender
+
         if (directory.isDirectoryOpen) {
           contentRender = (
             <Fragment>
