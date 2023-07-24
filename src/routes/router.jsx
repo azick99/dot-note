@@ -23,7 +23,7 @@ export const router = createBrowserRouter([
       { path: '/all', element: <AllTeamspaces /> },
       { path: '/settings', element: <Settings /> },
       { path: '/general', element: <General /> },
-      { path: '/notes/:directory', element: <Directory /> },
+      { path: '/notes/:id', element: <Directory /> },
       { path: '/todo', element: <Todo /> },
       { path: '/markdown', element: <Markdown /> },
       { path: '/uploaded', element: <Upload /> },

@@ -1,21 +1,26 @@
-import { Fragment } from 'react'
+import { Fragment, useState } from 'react'
 import { NavLink } from 'react-router-dom'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { AiFillFolderOpen, AiFillFolder, AiFillFileAdd } from 'react-icons/ai'
-import { faPenToSquare } from '@fortawesome/free-solid-svg-icons'
+import { AiFillFolderOpen, AiFillFolder } from 'react-icons/ai'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   selectAllDirectories,
   setIsDirectoryDropdownOpen,
 } from '../../routes/root-nav-route/directoriesSlice'
+import AddNewDirectoryInput from './AddNewDirectoryInput'
+import EditDirectoryInput from './EditDirectoryInput'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPenToSquare } from '@fortawesome/free-solid-svg-icons'
 
 const ChangableNavDirectory = () => {
+  const [editDirectoryId, setEditDirectoryId] = useState('')
   const directories = useSelector(selectAllDirectories)
+
   const dispatch = useDispatch()
 
-  const handleDropdown = (directoryId) => {
-    dispatch(setIsDirectoryDropdownOpen({ directoryId }))
-  }
+  const handleFolderDropdown = (directoryId) =>
+    dispatch(
+      setIsDirectoryDropdownOpen({ directoryId, name: 'folderDropdown' })
+    )
 
   return (
     <ul className="flex flex-col">
@@ -26,34 +31,37 @@ const ChangableNavDirectory = () => {
           contentRender = (
             <Fragment>
               <ul className="flex flex-col transition">
-                {directory.content.map((content) => (
-                  <NavLink
-                    to={content.link}
-                    key={content.id}
-                    className="li-directory !pl-14  flex items-center gap-2 font-semibold"
-                  >
-                    <span>🗒️{content.title}</span>{' '}
-                    <button
-                      type="button"
-                      aria-label="edit"
-                      className="flex items-center bg-white/70 rounded-md p-1 border-[1px] border-solid border-almost-dark/30 hover:bg-white  hover:border-light-blue"
-                    >
-                      <FontAwesomeIcon
-                        icon={faPenToSquare}
-                        className="h-3 w-3"
-                      />
-                    </button>
-                  </NavLink>
-                ))}
+                {directory.content.map((content) =>
+                  content.id === editDirectoryId ? (
+                    <EditDirectoryInput
+                      content={content}
+                      key={content.id}
+                      setEditDirectoryId={setEditDirectoryId}
+                    />
+                  ) : (
+                    <div key={content.id} className='relative'>
+                      <NavLink
+                        to={`/notes/${content.id}`}
+                        className="li-directory !pl-14  flex items-center gap-2 font-semibold"
+                      >
+                        <span>🗒️{content.title}</span>{' '}
+                      </NavLink>
+                      <button
+                        type="button"
+                        aria-label="edit"
+                        className=" flex self-start items-center bg-white/70 rounded-md p-1 border-[1px] border-solid border-almost-dark/30 hover:bg-white  hover:border-light-blue absolute z-10 top-[10px] right-12"
+                        onClick={() => setEditDirectoryId(content.id)}
+                      >
+                        <FontAwesomeIcon
+                          icon={faPenToSquare}
+                          className="h-3 w-3"
+                        />
+                      </button>
+                    </div>
+                  )
+                )}
               </ul>
-              <button
-                type="button"
-                aria-label="add"
-                className="li-directory !pl-14  flex items-center gap-2 font-semibold"
-              >
-                <AiFillFileAdd />
-                Add new {directory.file}
-              </button>
+              <AddNewDirectoryInput directory={directory} />
             </Fragment>
           )
         }
@@ -62,7 +70,7 @@ const ChangableNavDirectory = () => {
           <Fragment key={directory.id}>
             <li
               className="li-directory !pl-8 flex items-center gap-2 font-semibold cursor-pointer"
-              onClick={() => handleDropdown(directory.id)}
+              onClick={() => handleFolderDropdown(directory.id)}
             >
               {directory.isDirectoryOpen ? (
                 <AiFillFolderOpen />

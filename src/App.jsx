@@ -3,7 +3,8 @@ import { router } from './routes/router'
 import { Provider } from 'react-redux'
 import store from './store/store'
 
-// created routes in router.js
+// Created routes in router.js
+// directroySlice located in root-nav-route 
 
 function App() {
   return (
