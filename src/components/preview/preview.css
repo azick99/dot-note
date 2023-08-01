@@ -1,0 +1,57 @@
+@import 'react-quill/dist/quill.snow.css';
+
+#preview ol,
+#preview ul {
+    padding-left: 3em;
+}
+
+#preview ul>li {
+    list-style-type: disc;
+}
+
+#preview ol>li {
+    list-style-type: decimal;
+}
+
+.ql-indent-1 {
+    padding-left: 3em;
+}
+
+.ql-indent-2 {
+    padding-left: 6em;
+}
+
+.ql-indent-3 {
+    padding-left: 9em;
+}
+
+#preview blockquote {
+    border-left: 4px solid #ccc;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    padding-left: 16px;
+}
+
+.ql-size-huge {
+    font-size: 2.5rem;
+}
+
+.ql-align-center {
+    text-align: center;
+}
+
+.ql-align-right {
+    text-align: right;
+}
+
+.ql-size-large {
+    font-size: 1.5rem;
+}
+
+.ql-font-monospace {
+    font-family: 'Monaco', 'Courier New', monospace;
+}
+
+.ql-font-serif {
+    font-family: Georgia, Times New Roman, serif;
+}

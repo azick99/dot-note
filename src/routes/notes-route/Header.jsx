@@ -5,11 +5,11 @@ import { useDispatch } from 'react-redux'
 import { removeDirectory } from '../root-nav-route/directoriesSlice'
 import { useNavigate } from 'react-router-dom'
 
-const Header = ({ content }) => {
+const Header = ({ content, handleSaveClick }) => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const handleRemoveClick = () =>{
+  const handleRemoveClick = () => {
     dispatch(removeDirectory({ contentId: content.id }))
     navigate('/general')
   }
@@ -33,6 +33,7 @@ const Header = ({ content }) => {
           type="button"
           className="flex p-2 bg-light-grayish text-white items-center gap-2 rounded-lg"
           aria-label="save changes"
+          onClick={handleSaveClick}
         >
           <IoIosSave />
           <span>Save Changes</span>

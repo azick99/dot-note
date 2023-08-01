@@ -44,13 +44,25 @@ const directorySlice = createSlice({
     },
     removeDirectory(state, action) {
       const { contentId } = action.payload
-      console.log(action.payload)
       state.forEach((directory) => {
         const contentIndex = directory.content.findIndex(
           (content) => content.id === contentId
         )
         if (contentIndex !== -1) {
           directory.content.splice(contentIndex, 1)
+        }
+      })
+    },
+    saveDirectoryChanges(state, action) {
+      const { id, title, tags, content } = action.payload
+      state.forEach((directory) => {
+        const existingDirectory = directory.content.find(
+          (content) => content.id === id
+        )
+        if (existingDirectory) {
+          existingDirectory.title = title
+          existingDirectory.tags = tags
+          existingDirectory.noteContent = content
         }
       })
     },
@@ -64,6 +76,7 @@ export const {
   addNewDirectory,
   updateDirectory,
   removeDirectory,
+  saveDirectoryChanges,
 } = directorySlice.actions
 
 export default directorySlice.reducer

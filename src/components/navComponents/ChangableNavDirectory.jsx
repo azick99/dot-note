@@ -39,17 +39,19 @@ const ChangableNavDirectory = () => {
                       setEditDirectoryId={setEditDirectoryId}
                     />
                   ) : (
-                    <div key={content.id} className='relative'>
+                    <div key={content.id} className="relative">
                       <NavLink
                         to={`/notes/${content.id}`}
-                        className="li-directory !pl-14  flex items-center gap-2 font-semibold"
+                        className="li-directory !pl-14  flex items-center gap-2 font-semibold "
                       >
-                        <span>🗒️{content.title}</span>{' '}
+                        <div className="w-[10rem] h-[1.5rem] overflow-x-auto">
+                          🗒️{content.title}
+                        </div>
                       </NavLink>
                       <button
                         type="button"
                         aria-label="edit"
-                        className=" flex self-start items-center bg-white/70 rounded-md p-1 border-[1px] border-solid border-almost-dark/30 hover:bg-white  hover:border-light-blue absolute z-10 top-[10px] right-12"
+                        className=" flex self-start items-center bg-white/70 rounded-md p-1 border-[1px] border-solid border-almost-dark/30 hover:bg-white  hover:border-light-blue absolute z-10 top-[10px] right-8"
                         onClick={() => setEditDirectoryId(content.id)}
                       >
                         <FontAwesomeIcon

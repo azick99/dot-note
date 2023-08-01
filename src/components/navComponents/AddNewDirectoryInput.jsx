@@ -6,9 +6,13 @@ import {
   setIsDirectoryDropdownOpen,
 } from '../../routes/root-nav-route/directoriesSlice'
 import { nanoid } from '@reduxjs/toolkit'
+import { useNavigate } from 'react-router-dom'
 
 const AddNewDirectoryInput = ({ directory }) => {
   const [directoryTitle, setDirectoryTitle] = useState('')
+
+  const navigate = useNavigate()
+
   const inputRef = useRef(null)
   const dispatch = useDispatch()
 
@@ -56,6 +60,7 @@ const AddNewDirectoryInput = ({ directory }) => {
         })
       )
     }
+    navigate(`/notes/${id}`)
     setDirectoryTitle('')
   }
 
