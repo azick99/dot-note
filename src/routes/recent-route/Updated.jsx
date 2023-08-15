@@ -1,19 +1,19 @@
-import { FcSettings } from "react-icons/fc"
+import { FcClock } from "react-icons/fc"
 import WrapSections from "../../components/htc/WrapSections"
 import Header from "../notes-route/Header"
 
-const Settings = () => {
+const Updated = () => {
   return (
     <WrapSections>
     <Header directoryTitle={    <>
           <span className=" w-5 h-5 flex items-center justify-center">
-            <FcSettings/>
+            <FcClock />
           </span>
-          <p className="font-bold">Settings</p>
+          <p className="font-bold">Updated</p>
         </>}/>
-      Settings
+      Updated
   </WrapSections>
   )
 }
 
-export default Settings
+export default Updated

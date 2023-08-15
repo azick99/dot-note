@@ -7,6 +7,7 @@ import Header from './Header'
 import { saveDirectoryChanges } from '../root-nav-route/nav-features/directoriesSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectAllToggles, setToggleNotes } from './features/notesSlice'
+import { FcHome } from 'react-icons/fc'
 
 const RenderingSection = ({ content }) => {
   const [noteTitle, setNoteTitle] = useState(content?.noteTitle)
@@ -14,9 +15,10 @@ const RenderingSection = ({ content }) => {
   const [noteContent, setNoteContent] = useState(content?.noteContent)
 
   const toggles = useSelector(selectAllToggles)
-
+  // make toggles in notesSlice
   const hasChanges = toggles.hasChanges
   const isEditorOpen = toggles.isEditorOpen
+  const isChangesSaved = toggles.isChangesSaved
 
   const dispatch = useDispatch()
 
@@ -32,9 +34,9 @@ const RenderingSection = ({ content }) => {
     setNoteTags(content?.tags)
     setNoteContent(content?.noteContent)
 
-    // if (hasChanges) {
-    //   setIsChangesSaved(true)
-    // }
+    if (hasChanges) {
+      dispatch(setToggleNotes({ name: 'isChangesSaved' }))
+    }
   }, [content])
 
   useEffect(() => {
@@ -57,6 +59,7 @@ const RenderingSection = ({ content }) => {
       })
     )
     dispatch(setToggleNotes({ name: 'hasNoChanges' }))
+    dispatch(setToggleNotes({ name: 'isChangesNotSaved' }))
   }
 
   let editorContent
@@ -112,7 +115,9 @@ const RenderingSection = ({ content }) => {
               </button>
               <button
                 className="border border-black px-4 py-2"
-                onClick={() => setIsChangesSaved(false)}
+                onClick={() =>
+                  dispatch(setToggleNotes({ name: 'isChangesNotSaved' }))
+                }
               >
                 Do not Save
               </button>
@@ -126,6 +131,14 @@ const RenderingSection = ({ content }) => {
         content={content}
         handleSaveClick={handleSaveClick}
         hasChanges={hasChanges}
+        directoryTitle={
+          <>
+            <span className="bg-light-grayish/30 rounded-md w-5 h-5 flex items-center justify-center">
+              <FcHome />
+            </span>
+            <p className="font-bold">General / 🗒️Notes / {content?.title}</p>
+          </>
+        }
       />
       <main
         className={`grid ${

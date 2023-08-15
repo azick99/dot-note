@@ -66,7 +66,7 @@ const AddNewDirectoryInput = ({ directory }) => {
 
   if (directory.isAddClicked) {
     return (
-      <div className="flex gap-2 pl-10 p-2">
+      <div className="flex gap-2 pl-6 p-2">
         <input
           type="text"
           value={directoryTitle} // Use value prop to reflect the state in the input field

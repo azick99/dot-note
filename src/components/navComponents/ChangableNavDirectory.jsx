@@ -5,16 +5,19 @@ import { useDispatch, useSelector } from 'react-redux'
 import {
   selectAllDirectories,
   setIsDirectoryDropdownOpen,
+  // setPrevContentId,
 } from '../../routes/root-nav-route/nav-features/directoriesSlice'
 import AddNewDirectoryInput from './AddNewDirectoryInput'
 import EditDirectoryInput from './EditDirectoryInput'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons'
+import { selectAllToggles } from '../../routes/notes-route/features/notesSlice'
 
 const ChangableNavDirectory = () => {
   const [editDirectoryId, setEditDirectoryId] = useState('')
+  const [prevContentId, setPrevContentId] = useState('1')
+  
   const directories = useSelector(selectAllDirectories)
-
   const dispatch = useDispatch()
 
   const handleFolderDropdown = (directoryId) =>
@@ -43,6 +46,7 @@ const ChangableNavDirectory = () => {
                       <NavLink
                         to={`/notes/${content.id}`}
                         className="li-directory !pl-14  flex items-center gap-2 font-semibold "
+                     
                       >
                         <div className="w-[10rem] h-[1.5rem] overflow-x-auto">
                           🗒️{content.title}

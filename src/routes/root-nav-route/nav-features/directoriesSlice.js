@@ -70,6 +70,17 @@ const directorySlice = createSlice({
         }
       })
     },
+    // setPrevContentId(state, action) {
+    //   const { id } = action.payload
+    //   state.forEach((directory) => {
+    //     const existingDirectory = directory.content.find(
+    //       (content) => content.id === id
+    //     )
+    //     if (existingDirectory) {
+    //       existingDirectory.id = id
+    //     }
+    //   })
+    // },
   },
 })
 
@@ -81,6 +92,7 @@ export const {
   updateDirectory,
   removeDirectory,
   saveDirectoryChanges,
+  // setPrevContentId
 } = directorySlice.actions
 
 export default directorySlice.reducer

@@ -7,10 +7,10 @@ import Settings from './settings-route/Settings'
 import General from './general-route/General'
 import Upload from './upload-route/Upload'
 import Trash from './trash-route/Trash'
-import Recent from './recent-route/Recent'
 import Todo from './todo-route/Todo'
 import Markdown from './markdown-route/Markdown'
 import Directory from './notes-route/Directory'
+import Updated from './recent-route/Updated'
 
 export const router = createBrowserRouter([
   {
@@ -19,7 +19,7 @@ export const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       { path: '/search', element: <Search /> },
-      { path: '/recent', element: <Recent /> },
+      { path: '/updated', element: <Updated /> },
       { path: '/all', element: <AllTeamspaces /> },
       { path: '/settings', element: <Settings /> },
       { path: '/general', element: <General /> },

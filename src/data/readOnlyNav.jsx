@@ -18,7 +18,7 @@ export const directories = [
     id: 3,
     title: 'Updated',
     icon: <FcClock className="w-5 h-5" />,
-    link: 'recent',
+    link: 'updated',
   },
   {
     id: 4,

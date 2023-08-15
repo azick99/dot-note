@@ -17,7 +17,7 @@ const EditDirectoryInput = ({ content, setEditDirectoryId }) => {
   const handleEditChange = (e) => setContentTitle(e.target.value)
 
   return (
-    <div className="flex gap-2 pl-10 p-2">
+    <div className="flex gap-2 pl-5 p-2">
       <input
         type="text"
         value={contentTitle} // Use value prop to reflect the state in the input field

@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
+  changes: {},
   toggles: {
     isSidebarOpen: false,
     isChangesSaved: false,
@@ -14,6 +15,14 @@ const notesSlice = createSlice({
   name: 'notes',
   initialState,
   reducers: {
+    setChanges(state, action) {
+      const { id, changes } = action.payload
+      state.changes[id] = changes
+    },
+    resetChanges(state, action) {
+      const id = action.payload
+      delete state.changes[id]
+    },
     setToggleNotes(state, action) {
       const { name, noteChanges } = action.payload
       const { isSidebarOpen, isEditorOpen } = state.toggles
@@ -35,6 +44,14 @@ const notesSlice = createSlice({
           state.toggles.isEditorOpen = !isEditorOpen
           break
         }
+        case 'isChangesSaved': {
+          state.toggles.isChangesSaved = true
+          break
+        }
+        case 'isChangesNotSaved': {
+          state.toggles.isChangesSaved = false
+          break
+        }
         default:
           throw new Error('problems appeared')
       }
@@ -43,7 +60,6 @@ const notesSlice = createSlice({
 })
 
 export const selectAllToggles = (state) => state.notes.toggles
-
 export const { setToggleNotes } = notesSlice.actions
 
 export default notesSlice.reducer
