@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import {
   selectAllDirectories,
   setIsDirectoryDropdownOpen,
-} from '../../routes/root-nav-route/directoriesSlice'
+} from '../../routes/root-nav-route/nav-features/directoriesSlice'
 import AddNewDirectoryInput from './AddNewDirectoryInput'
 import EditDirectoryInput from './EditDirectoryInput'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'

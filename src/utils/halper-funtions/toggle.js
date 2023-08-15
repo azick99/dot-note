@@ -1,4 +1,4 @@
-export const openDropdown = (state, directoryId, name) => {
+export const toggle = (state, directoryId, name) => {
   state.forEach((directory) => {
     if (directory.id === directoryId) {
       if (name === 'folderDropdown') {
@@ -13,3 +13,6 @@ export const openDropdown = (state, directoryId, name) => {
     }
   })
 }
+
+
+

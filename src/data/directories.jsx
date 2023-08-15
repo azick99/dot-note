@@ -1,4 +1,3 @@
-import { nanoid } from '@reduxjs/toolkit'
 
 export const directories = [
   {
@@ -6,17 +5,19 @@ export const directories = [
     title: '🗒️Notes',
     isDirectoryOpen: true,
     file: 'note',
-    isAddClicked:false,
+    isAddClicked: false,
     content: [
       {
         id: '1',
         title: 'Welcome Note',
-        tags: 'html',
+        noteTitle: 'Welcome Page',
+        tags: 'html css',
         noteContent: 'Hello world',
       },
       {
-        id: nanoid(),
+        id: '2',
         title: 'hello',
+        noteTitle: 'Hello page',
         tags: 'html',
         noteContent: 'I am here',
       },
@@ -27,7 +28,7 @@ export const directories = [
     title: '🎒To-Do',
     isDirectoryOpen: false,
     file: 'todo',
-    isAddClicked:false,
+    isAddClicked: false,
     content: [],
   },
   {
@@ -35,7 +36,7 @@ export const directories = [
     title: '🗃️Git Hub MarkDown',
     isDirectoryOpen: false,
     file: 'markdown',
-    isAddClicked:false,
+    isAddClicked: false,
     content: [],
   },
 ]

@@ -1,25 +1,46 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import ReactQuill from 'react-quill'
 import { formats, modules } from '../../utils/editor-utils/richTextEditorUtils'
 import 'react-quill/dist/quill.snow.css'
 import Preview from '../../components/preview/Preview'
 import Header from './Header'
-import { saveDirectoryChanges } from '../root-nav-route/directoriesSlice'
-import { useDispatch } from 'react-redux'
+import { saveDirectoryChanges } from '../root-nav-route/nav-features/directoriesSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { selectAllToggles, setToggleNotes } from './features/notesSlice'
 
 const RenderingSection = ({ content }) => {
-  const [noteTitle, setNoteTitle] = useState(content?.title)
+  const [noteTitle, setNoteTitle] = useState(content?.noteTitle)
   const [noteTags, setNoteTags] = useState(content?.tags)
   const [noteContent, setNoteContent] = useState(content?.noteContent)
-  const noteContentRef = useRef(noteContent)
+
+  const toggles = useSelector(selectAllToggles)
+
+  const hasChanges = toggles.hasChanges
+  const isEditorOpen = toggles.isEditorOpen
 
   const dispatch = useDispatch()
-  console.log(noteContent)
+
+  // Check if there are any changes in noteTitle, noteTags, or noteContent
+  const hasTitleChanged = noteTitle !== content?.noteTitle
+  const hasTagsChanged = noteTags !== content?.tags
+  const hasContentChanged = noteContent !== content?.noteContent
+
+  const noteChanges = hasTitleChanged || hasTagsChanged || hasContentChanged
+
   useEffect(() => {
-    setNoteTitle(content?.title)
+    setNoteTitle(content?.noteTitle)
     setNoteTags(content?.tags)
     setNoteContent(content?.noteContent)
+
+    // if (hasChanges) {
+    //   setIsChangesSaved(true)
+    // }
   }, [content])
+
+  useEffect(() => {
+    // Set hasChanges to true if any of the fields have changed
+    dispatch(setToggleNotes({ name: 'hasChanges', noteChanges }))
+  }, [noteChanges, content])
 
   const handleContentChange = (newContent) => {
     // Update the noteContent state when the editor content changes
@@ -35,42 +56,88 @@ const RenderingSection = ({ content }) => {
         content: noteContent,
       })
     )
+    dispatch(setToggleNotes({ name: 'hasNoChanges' }))
+  }
+
+  let editorContent
+
+  if (isEditorOpen) {
+    editorContent = (
+      <section id="Notes" className="flex flex-col gap-5">
+        <h2>Notes</h2>
+        <div className="flex flex-col gap-5 " key={content.id}>
+          <div className="grid grid-cols-2 gap-2 ">
+            <p>{noteTitle}</p>
+            {/* <input
+       type="text"
+       className="bg-light-grayish/30 pl-5"
+       value={noteTitle}
+       onChange={(e) => setNoteTitle(e.target.value)}
+     /> */}
+            <input
+              type="text"
+              className=" pl-5 rounded-md border-[.5px] border-solid border-[#ccc]"
+              value={noteTags}
+              onChange={(e) => setNoteTags(e.target.value)}
+            />
+          </div>
+          <div className="w-full flex" id="editor">
+            <ReactQuill
+              theme="snow"
+              value={noteContent}
+              placeholder="What do you want to say..."
+              onChange={handleContentChange}
+              className="w-full flex flex-col gap-2 h-[23rem]"
+              modules={modules}
+              formats={formats}
+            />
+          </div>
+        </div>
+      </section>
+    )
   }
 
   return (
     <>
-      <Header content={content} handleSaveClick={handleSaveClick} />
-      <main className=" grid grid-cols-2 w-full h-full p-6">
-        <section id="Notes" className="flex flex-col gap-5">
-          <h2>Notes</h2>
-          <div className="flex flex-col gap-5 " key={content.id}>
-            <div className="grid grid-cols-2 gap-2 ">
-              <input
-                type="text"
-                className="bg-light-grayish/30 pl-5"
-                value={noteTitle}
-                onChange={(e) => setNoteTitle(e.target.value)}
-              />
-              <input
-                type="text"
-                className="bg-light-grayish/30 pl-5"
-                value={noteTags}
-                onChange={(e) => setNoteTags(e.target.value)}
-              />
-            </div>
-            <div className="w-full" id="editor">
-              <ReactQuill
-                theme="snow"
-                value={noteContent}
-                onChange={handleContentChange}
-                className="w-full flex flex-col gap-2 h-[23rem]"
-                modules={modules}
-                formats={formats}
-              />
+      {/* {isChangesSaved ? (
+        <div className="fixed inset-0 flex items-center justify-center z-10 bg-black/50">
+          <div className="flex flex-col gap-2 p-4 bg-white">
+            <p>You have not saved changes!</p>
+            <div className="flex gap-2">
+              <button
+                className="border border-black px-4 py-2"
+                onClick={handleSaveClick}
+              >
+                Save Changes
+              </button>
+              <button
+                className="border border-black px-4 py-2"
+                onClick={() => setIsChangesSaved(false)}
+              >
+                Do not Save
+              </button>
             </div>
           </div>
-        </section>
-        <Preview noteContent={noteContent} key={content.id} />
+        </div>
+      ) : (
+        ''
+      )} */}
+      <Header
+        content={content}
+        handleSaveClick={handleSaveClick}
+        hasChanges={hasChanges}
+      />
+      <main
+        className={`grid ${
+          isEditorOpen ? 'grid-cols-2' : 'grid-cols-1'
+        } w-full h-full p-6`}
+      >
+        {editorContent}
+        <Preview
+          noteContent={noteContent}
+          setToggleNotes={setToggleNotes}
+          key={content.id}
+        />
       </main>
     </>
   )

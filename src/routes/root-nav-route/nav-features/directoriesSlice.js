@@ -1,8 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { directories } from '../../data/directories'
-import { openDropdown } from '../../utils/halper-funtions/dropdown'
+import { toggle } from '../../../utils/halper-funtions/toggle'
+import { directories } from '../../../data/directories'
 
 const initialState = directories
+
 const directorySlice = createSlice({
   name: 'directories',
   initialState,
@@ -12,17 +13,17 @@ const directorySlice = createSlice({
       const { directoryId, name } = action.payload
       //The function works with all dropdowns on the navigation part,
       //except "EditDrodpwon"
-      openDropdown(state, directoryId, name)
+      toggle(state, directoryId, name)
     },
-
     addNewDirectory(state, action) {
       const { id, title, directoryId } = action.payload
 
       const newContent = {
         id: id,
         title: title,
+        noteTitle: 'New page',
         tags: 'new',
-        content: 'New',
+        noteContent: '',
       }
 
       state.forEach((directory) => {
@@ -31,6 +32,7 @@ const directorySlice = createSlice({
         }
       })
     },
+
     updateDirectory(state, action) {
       const { id, title } = action.payload
       state.forEach((directory) => {
@@ -42,6 +44,7 @@ const directorySlice = createSlice({
         }
       })
     },
+
     removeDirectory(state, action) {
       const { contentId } = action.payload
       state.forEach((directory) => {
@@ -53,6 +56,7 @@ const directorySlice = createSlice({
         }
       })
     },
+
     saveDirectoryChanges(state, action) {
       const { id, title, tags, content } = action.payload
       state.forEach((directory) => {
@@ -60,7 +64,7 @@ const directorySlice = createSlice({
           (content) => content.id === id
         )
         if (existingDirectory) {
-          existingDirectory.title = title
+          existingDirectory.noteTitle = title
           existingDirectory.tags = tags
           existingDirectory.noteContent = content
         }

@@ -2,10 +2,10 @@ import { FcHome } from 'react-icons/fc'
 import { BsTrashFill } from 'react-icons/bs'
 import { IoIosSave } from 'react-icons/io'
 import { useDispatch } from 'react-redux'
-import { removeDirectory } from '../root-nav-route/directoriesSlice'
+import { removeDirectory } from '../root-nav-route/nav-features/directoriesSlice'
 import { useNavigate } from 'react-router-dom'
 
-const Header = ({ content, handleSaveClick }) => {
+const Header = ({ content, handleSaveClick, hasChanges }) => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -31,9 +31,12 @@ const Header = ({ content, handleSaveClick }) => {
         </button>
         <button
           type="button"
-          className="flex p-2 bg-light-grayish text-white items-center gap-2 rounded-lg"
+          className={`flex p-2 ${
+            !hasChanges ? 'bg-primery/50' : 'bg-primery/90'
+          }  text-white items-center gap-2 rounded-lg`}
           aria-label="save changes"
           onClick={handleSaveClick}
+          disabled={!hasChanges}
         >
           <IoIosSave />
           <span>Save Changes</span>

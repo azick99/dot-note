@@ -2,11 +2,19 @@ import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import ChangableNavDirectory from '../../components/navComponents/ChangableNavDirectory'
 import StableNavDirectory from '../../components/navComponents/StableNavDirectory'
 import { FcHome, FcUpload, FcEmptyTrash } from 'react-icons/fc'
-import { useEffect, useContext } from 'react'
-import { NavigationContext } from '../../context/navigation.context'
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { selectAllToggles, setToggleNotes } from '../notes-route/features/notesSlice'
+
 
 const SideNavigation = () => {
-  const { isSidebarOpen, setIsSidebarOpen } = useContext(NavigationContext)
+  const isSidebarOpen  = useSelector(selectAllToggles).isSidebarOpen
+
+  const dispatch = useDispatch()
+
+  const handleSidebarToggle = () =>
+    dispatch(setToggleNotes({ name: 'sidebarToggle' }))
+
   // navigate when user first open
   const navigate = useNavigate()
 
@@ -20,13 +28,13 @@ const SideNavigation = () => {
         isSidebarOpen ? 'flex' : 'grid grid-cols-12'
       } min-h-screen `}
     >
-      <div className={`flex ${isSidebarOpen ? 'w-[vw5]' : 'col-span-3'} `}>
+      <div className={`flex ${isSidebarOpen ? 'w-[5wv]' : 'col-span-3'} `}>
         {isSidebarOpen ? (
           ''
         ) : (
           <nav
             id="sidebar"
-            className="w-[90%] bg-secondary flex flex-col py-5 gap-3 font-bold"
+            className="w-[90%] bg-secondary flex flex-col py-5 gap-3 font-bold h-[50.5vw] overflow-y-auto"
           >
             <div className="flex items-center pl-5 gap-5">
               <span className=" text-logo bg-almost-dark rounded-full w-7 h-7 flex justify-center items-center text-white font-serif font-medium">
@@ -79,7 +87,7 @@ const SideNavigation = () => {
             className="self-start  bg-light-grayish text-white p-2 mt-4 ml-3"
             type="button"
             aria-label="side bar dropdown"
-            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+            onClick={handleSidebarToggle}
           >
             =
           </button>

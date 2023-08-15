@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { updateDirectory } from '../../routes/root-nav-route/directoriesSlice'
+import { updateDirectory } from '../../routes/root-nav-route/nav-features/directoriesSlice'
 
 const EditDirectoryInput = ({ content, setEditDirectoryId }) => {
   const [contentTitle, setContentTitle] = useState(content.title)

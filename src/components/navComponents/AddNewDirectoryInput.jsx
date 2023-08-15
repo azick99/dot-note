@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux'
 import {
   addNewDirectory,
   setIsDirectoryDropdownOpen,
-} from '../../routes/root-nav-route/directoriesSlice'
+} from '../../routes/root-nav-route/nav-features/directoriesSlice'
 import { nanoid } from '@reduxjs/toolkit'
 import { useNavigate } from 'react-router-dom'
 
