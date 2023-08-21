@@ -1,24 +1,25 @@
 import { useEffect, useState } from 'react'
 import ReactQuill from 'react-quill'
 import { formats, modules } from '../../utils/editor-utils/richTextEditorUtils'
-import 'react-quill/dist/quill.snow.css'
 import Preview from '../../components/preview/Preview'
 import Header from './Header'
 import { saveDirectoryChanges } from '../root-nav-route/nav-features/directoriesSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectAllToggles, setToggleNotes } from './features/notesSlice'
 import { FcHome } from 'react-icons/fc'
+import 'react-quill/dist/quill.snow.css'
+import ChangesSavedModal from '../../components/modal/ChangesSavedModal'
 
 const RenderingSection = ({ content }) => {
   const [noteTitle, setNoteTitle] = useState(content?.noteTitle)
   const [noteTags, setNoteTags] = useState(content?.tags)
   const [noteContent, setNoteContent] = useState(content?.noteContent)
 
+  const [isEditorToolbarOpen, setIsEditorToolBarOpen] = useState(true)
+
   const toggles = useSelector(selectAllToggles)
-  // make toggles in notesSlice
   const hasChanges = toggles.hasChanges
   const isEditorOpen = toggles.isEditorOpen
-  const isChangesSaved = toggles.isChangesSaved
 
   const dispatch = useDispatch()
 
@@ -33,22 +34,19 @@ const RenderingSection = ({ content }) => {
     setNoteTitle(content?.noteTitle)
     setNoteTags(content?.tags)
     setNoteContent(content?.noteContent)
-
-    if (hasChanges) {
-      dispatch(setToggleNotes({ name: 'isChangesSaved' }))
-    }
   }, [content])
 
   useEffect(() => {
-    // Set hasChanges to true if any of the fields have changed
     dispatch(setToggleNotes({ name: 'hasChanges', noteChanges }))
   }, [noteChanges, content])
-
+  
   const handleContentChange = (newContent) => {
     // Update the noteContent state when the editor content changes
     setNoteContent(newContent)
   }
 
+
+  //Header save handle
   const handleSaveClick = () => {
     dispatch(
       saveDirectoryChanges({
@@ -59,8 +57,9 @@ const RenderingSection = ({ content }) => {
       })
     )
     dispatch(setToggleNotes({ name: 'hasNoChanges' }))
-    dispatch(setToggleNotes({ name: 'isChangesNotSaved' }))
   }
+
+  //Modal
 
   let editorContent
 
@@ -68,8 +67,8 @@ const RenderingSection = ({ content }) => {
     editorContent = (
       <section id="Notes" className="flex flex-col gap-5">
         <h2>Notes</h2>
-        <div className="flex flex-col gap-5 " key={content.id}>
-          <div className="grid grid-cols-2 gap-2 ">
+        <div className="flex flex-col " key={content.id}>
+          <div className="grid grid-cols-2 gap-2 p-3 rounded-md bg-slate-400">
             <p>{noteTitle}</p>
             {/* <input
        type="text"
@@ -79,20 +78,26 @@ const RenderingSection = ({ content }) => {
      /> */}
             <input
               type="text"
-              className=" pl-5 rounded-md border-[.5px] border-solid border-[#ccc]"
+              className=" pl-5 rounded-md border-[.5px]  border-solid border-[#ccc]"
               value={noteTags}
               onChange={(e) => setNoteTags(e.target.value)}
             />
           </div>
-          <div className="w-full flex" id="editor">
+          <button onClick={() => setIsEditorToolBarOpen(!isEditorToolbarOpen)}>
+            Open Editor Toolbar
+          </button>
+          <div className="editor-container">
             <ReactQuill
               theme="snow"
               value={noteContent}
               placeholder="What do you want to say..."
               onChange={handleContentChange}
-              className="w-full flex flex-col gap-2 h-[23rem]"
+              className={`w-full flex flex-col gap-2 ${
+                isEditorToolbarOpen ? 'opened' : 'closed'
+              }`}
               modules={modules}
               formats={formats}
+              id="editor"
             />
           </div>
         </div>
@@ -102,31 +107,7 @@ const RenderingSection = ({ content }) => {
 
   return (
     <>
-      {/* {isChangesSaved ? (
-        <div className="fixed inset-0 flex items-center justify-center z-10 bg-black/50">
-          <div className="flex flex-col gap-2 p-4 bg-white">
-            <p>You have not saved changes!</p>
-            <div className="flex gap-2">
-              <button
-                className="border border-black px-4 py-2"
-                onClick={handleSaveClick}
-              >
-                Save Changes
-              </button>
-              <button
-                className="border border-black px-4 py-2"
-                onClick={() =>
-                  dispatch(setToggleNotes({ name: 'isChangesNotSaved' }))
-                }
-              >
-                Do not Save
-              </button>
-            </div>
-          </div>
-        </div>
-      ) : (
-        ''
-      )} */}
+      <ChangesSavedModal toggles={toggles} handleSaveClick={handleSaveClick} />
       <Header
         content={content}
         handleSaveClick={handleSaveClick}
@@ -143,7 +124,7 @@ const RenderingSection = ({ content }) => {
       <main
         className={`grid ${
           isEditorOpen ? 'grid-cols-2' : 'grid-cols-1'
-        } w-full h-full p-6`}
+        } w-full p-6`}
       >
         {editorContent}
         <Preview

@@ -5,26 +5,40 @@ import { useDispatch, useSelector } from 'react-redux'
 import {
   selectAllDirectories,
   setIsDirectoryDropdownOpen,
-  // setPrevContentId,
 } from '../../routes/root-nav-route/nav-features/directoriesSlice'
 import AddNewDirectoryInput from './AddNewDirectoryInput'
 import EditDirectoryInput from './EditDirectoryInput'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons'
-import { selectAllToggles } from '../../routes/notes-route/features/notesSlice'
+import {
+  selectAllToggles,
+  selectPrevId,
+  setNextId,
+  setPrevId,
+  setToggleNotes,
+} from '../../routes/notes-route/features/notesSlice'
 
 const ChangableNavDirectory = () => {
   const [editDirectoryId, setEditDirectoryId] = useState('')
-  const [prevContentId, setPrevContentId] = useState('1')
-  
-  const directories = useSelector(selectAllDirectories)
+
   const dispatch = useDispatch()
+  const directories = useSelector(selectAllDirectories)
+
+  const toggles = useSelector(selectAllToggles)
+  const prevId = useSelector(selectPrevId)
+  const hasChanges = toggles.hasChanges
 
   const handleFolderDropdown = (directoryId) =>
     dispatch(
       setIsDirectoryDropdownOpen({ directoryId, name: 'folderDropdown' })
     )
 
+  const handleModalDropdown = (id) => {
+    dispatch(setToggleNotes({ name: 'isChangesSaved' }))
+    dispatch(setNextId(id))
+  }
+
+console.log(prevId)
   return (
     <ul className="flex flex-col">
       {directories.map((directory) => {
@@ -43,15 +57,28 @@ const ChangableNavDirectory = () => {
                     />
                   ) : (
                     <div key={content.id} className="relative">
-                      <NavLink
-                        to={`/notes/${content.id}`}
-                        className="li-directory !pl-14  flex items-center gap-2 font-semibold "
-                     
-                      >
-                        <div className="w-[10rem] h-[1.5rem] overflow-x-auto">
-                          🗒️{content.title}
-                        </div>
-                      </NavLink>
+                      {hasChanges ? (
+                        <li
+                          className={`li-directory ${
+                            content.id === prevId ? 'bg-light-grayish/40' : ''
+                          } !pl-14 bg flex items-center gap-2 cursor-pointer font-semibold`}
+                          onClick={() => handleModalDropdown(content.id)}
+                        >
+                          <div className="w-[10rem] h-[1.5rem] overflow-x-auto">
+                            🗒️{content.title}
+                          </div>
+                        </li>
+                      ) : (
+                        <NavLink
+                          to={`/notes/${content.id}`}
+                          className="li-directory !pl-14  flex items-center gap-2 font-semibold "
+                          onClick={() => dispatch(setPrevId(content.id))}
+                        >
+                          <div className="w-[10rem] h-[1.5rem] overflow-x-auto">
+                            🗒️{content.title}
+                          </div>
+                        </NavLink>
+                      )}
                       <button
                         type="button"
                         aria-label="edit"

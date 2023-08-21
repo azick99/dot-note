@@ -8,7 +8,7 @@ const WrapSections = ({ children }) => {
     <div
       className={`flex flex-col ${
         isSidebarOpen ? 'col-span-11 ' : 'col-span-9'
-      } w-full`}
+      } w-full h-[30rem]`}
     >
       {children}
     </div>

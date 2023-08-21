@@ -1,4 +1,3 @@
-
 export const directories = [
   {
     id: '1',
@@ -12,14 +11,14 @@ export const directories = [
         title: 'Welcome Note',
         noteTitle: 'Welcome Page',
         tags: 'html css',
-        noteContent: 'Hello world',
+        noteContent: '<p>Hello world</p>',
       },
       {
         id: '2',
         title: 'hello',
         noteTitle: 'Hello page',
         tags: 'html',
-        noteContent: 'I am here',
+        noteContent: '<p>I am here</p>',
       },
     ],
   },

@@ -28,7 +28,7 @@
     @apply pl-6 py-2 hover:bg-light-grayish/20 hover:text-primery transition rounded-sm
 }
  .li-directory.active{
-    @apply bg-light-grayish/40
+    @apply !bg-light-grayish/40
 }
 
 /* Custom styles for React quill*/
@@ -37,6 +37,27 @@
 }
 
 .ql-toolbar, .ql-container{
-    @apply !rounded-md !border-[1px] !border-solid !border-[#ccc]
+    @apply !rounded-md !border-[1px] !border-solid !border-[#ccc] 
 }
 
+.ql-editor{
+    @apply !overflow-y-auto
+}
+.ql-toolbar{
+    @apply bg-slate-400
+}
+
+.editor-container > .opened > .ql-toolbar{
+    @apply block
+}
+
+.editor-container > .closed > .ql-toolbar{
+    @apply hidden
+}
+.editor-container > .opened > .ql-container{
+    @apply !h-[19rem]
+}
+
+.editor-container > .closed > .ql-container{
+    @apply !h-[25rem]
+}

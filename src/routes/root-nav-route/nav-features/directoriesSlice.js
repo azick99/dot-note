@@ -23,7 +23,7 @@ const directorySlice = createSlice({
         title: title,
         noteTitle: 'New page',
         tags: 'new',
-        noteContent: '',
+        noteContent: '<p><br></p>',
       }
 
       state.forEach((directory) => {

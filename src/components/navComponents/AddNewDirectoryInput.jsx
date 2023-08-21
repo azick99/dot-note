@@ -7,6 +7,7 @@ import {
 } from '../../routes/root-nav-route/nav-features/directoriesSlice'
 import { nanoid } from '@reduxjs/toolkit'
 import { useNavigate } from 'react-router-dom'
+import { setPrevId } from '../../routes/notes-route/features/notesSlice'
 
 const AddNewDirectoryInput = ({ directory }) => {
   const [directoryTitle, setDirectoryTitle] = useState('')
@@ -61,6 +62,7 @@ const AddNewDirectoryInput = ({ directory }) => {
       )
     }
     navigate(`/notes/${id}`)
+    dispatch(setPrevId(id))
     setDirectoryTitle('')
   }
 

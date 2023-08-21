@@ -1,9 +1,8 @@
-import { FcHome } from 'react-icons/fc'
 import { BsTrashFill } from 'react-icons/bs'
 import { IoIosSave } from 'react-icons/io'
 import { useDispatch } from 'react-redux'
 import { removeDirectory } from '../root-nav-route/nav-features/directoriesSlice'
-import { useNavigate } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 
 const Header = ({ content, handleSaveClick, hasChanges, directoryTitle }) => {
   const dispatch = useDispatch()
@@ -41,7 +40,7 @@ const Header = ({ content, handleSaveClick, hasChanges, directoryTitle }) => {
           </>
         )}
 
-        <button>Sign in</button>
+        <NavLink to='/auth'>Sign in</NavLink>
       </div>
     </header>
   )

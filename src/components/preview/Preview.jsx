@@ -13,13 +13,13 @@ const Preview = ({ noteContent, setToggleNotes }) => {
       <h2 className="flex justify-end mr-10 mb-5">Preview</h2>
       <div className="flex flex-col gap-4">
         <button
-          className="w-[30px] h-[25px] bg-slate-500 text-white rounded-full mx-2 self-end"
+          className="w-[30px] h-[25px] bg-slate-500 text-white rounded-full mx-2  self-end"
           type="button"
           onClick={handleEditorToggle}
         >
           =
         </button>
-        <div className="overflow-auto pl-5">{HTMLReactParser(noteContent)}</div>
+        <div className="h-[27rem] overflow-y-auto pl-5 pt-10">{HTMLReactParser(noteContent)}</div>
       </div>
     </section>
   )

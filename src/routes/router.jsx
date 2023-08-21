@@ -11,6 +11,7 @@ import Todo from './todo-route/Todo'
 import Markdown from './markdown-route/Markdown'
 import Directory from './notes-route/Directory'
 import Updated from './recent-route/Updated'
+import Auth from './authentication-route/Auth'
 
 export const router = createBrowserRouter([
   {
@@ -18,6 +19,7 @@ export const router = createBrowserRouter([
     element: <SideNavigation />,
     errorElement: <ErrorPage />,
     children: [
+      { path: '/auth', element: <Auth/> },
       { path: '/search', element: <Search /> },
       { path: '/updated', element: <Updated /> },
       { path: '/all', element: <AllTeamspaces /> },

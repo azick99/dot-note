@@ -1,7 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-  changes: {},
+  directoryId: {
+    prevId: '1',
+    nextId: '2',
+  },
   toggles: {
     isSidebarOpen: false,
     isChangesSaved: false,
@@ -15,13 +18,11 @@ const notesSlice = createSlice({
   name: 'notes',
   initialState,
   reducers: {
-    setChanges(state, action) {
-      const { id, changes } = action.payload
-      state.changes[id] = changes
+    setPrevId(state, action) {
+      state.directoryId.prevId = action.payload
     },
-    resetChanges(state, action) {
-      const id = action.payload
-      delete state.changes[id]
+    setNextId(state, action) {
+      state.directoryId.nextId = action.payload
     },
     setToggleNotes(state, action) {
       const { name, noteChanges } = action.payload
@@ -60,6 +61,9 @@ const notesSlice = createSlice({
 })
 
 export const selectAllToggles = (state) => state.notes.toggles
-export const { setToggleNotes } = notesSlice.actions
+export const selectPrevId = (state) => state.notes.directoryId.prevId
+export const selectNextId = (state) => state.notes.directoryId.nextId
+
+export const { setToggleNotes, setPrevId, setNextId } = notesSlice.actions
 
 export default notesSlice.reducer
