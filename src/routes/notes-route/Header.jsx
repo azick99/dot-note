@@ -1,10 +1,12 @@
 import { BsTrashFill } from 'react-icons/bs'
 import { IoIosSave } from 'react-icons/io'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { removeDirectory } from '../root-nav-route/nav-features/directoriesSlice'
 import { NavLink, useNavigate } from 'react-router-dom'
+import { selectUserData } from './features/notesSlice'
 
 const Header = ({ content, handleSaveClick, hasChanges, directoryTitle }) => {
+  const userData = useSelector(selectUserData)
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -39,8 +41,15 @@ const Header = ({ content, handleSaveClick, hasChanges, directoryTitle }) => {
             </button>
           </>
         )}
-
-        <NavLink to='/auth'>Sign in</NavLink>
+        {userData === null ? (
+          <NavLink to="/auth">Sign in</NavLink>
+        ) : (
+          <img
+            src={userData.photoURL}
+            className="w-10 h-10 rounded-full shadow-lg"
+            alt="Avatar"
+          />
+        )}
       </div>
     </header>
   )

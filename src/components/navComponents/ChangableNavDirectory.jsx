@@ -38,7 +38,6 @@ const ChangableNavDirectory = () => {
     dispatch(setNextId(id))
   }
 
-console.log(prevId)
   return (
     <ul className="flex flex-col">
       {directories.map((directory) => {
