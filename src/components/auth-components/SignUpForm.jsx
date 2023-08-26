@@ -3,6 +3,10 @@ import AuthInput from './AuthInput'
 import Button from './Button'
 import RememberPassword from './rememberPassword'
 import { BsGithub, BsGoogle } from 'react-icons/bs'
+import {
+  createAuthUserWithEmailAndPassword,
+  createUserDocumentFromAuth,
+} from '../../utils/firebase-utils/firebase.utils'
 
 const defaultFormFields = {
   username: '',
@@ -14,7 +18,30 @@ const defaultFormFields = {
 const SignUpForm = ({ handleAuthWithGoogle, setIsSignInFormOpen }) => {
   const [formFields, setFormFields] = useState(defaultFormFields)
   const { username, email, password, confirmPassword } = formFields
-  
+
+  const resetFormFields = () =>{
+    setFormFields(defaultFormFields)
+  }
+
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+    if (password !== confirmPassword) {
+      alert('passords do not match')
+      return
+    }
+
+    try {
+      const { user } = await createAuthUserWithEmailAndPassword(email, password)
+      await createUserDocumentFromAuth(user, { displayName: username })
+      resetFormFields()
+    } catch (error) {
+      if(error.code === 'auth/email-already-in-use'){
+        alert('Cannot create user email already in use')
+      }else{
+        console.log('failed to Sign in ', error)
+      }
+    }
+  }
   const handleChange = (event) => {
     const { name, value } = event.target
     setFormFields({ ...formFields, [name]: value })
@@ -22,7 +49,7 @@ const SignUpForm = ({ handleAuthWithGoogle, setIsSignInFormOpen }) => {
 
   return (
     <>
-      <form onSubmit={() => {}}>
+      <form onSubmit={handleSubmit}>
         <AuthInput
           isValueHasChanges={!!username}
           label="Username"
@@ -33,7 +60,7 @@ const SignUpForm = ({ handleAuthWithGoogle, setIsSignInFormOpen }) => {
           value={username}
         />
         <AuthInput
-          isValueHasChanges={!!email }
+          isValueHasChanges={!!email}
           label="Email address"
           type="email"
           required
@@ -42,7 +69,7 @@ const SignUpForm = ({ handleAuthWithGoogle, setIsSignInFormOpen }) => {
           value={email}
         />
         <AuthInput
-          isValueHasChanges={!!password }
+          isValueHasChanges={!!password}
           label="Password"
           type="password"
           required
