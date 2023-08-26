@@ -14,9 +14,7 @@ const defaultFormFields = {
 const SignUpForm = ({ handleAuthWithGoogle, setIsSignInFormOpen }) => {
   const [formFields, setFormFields] = useState(defaultFormFields)
   const { username, email, password, confirmPassword } = formFields
-
-  console.log(formFields)
-
+  
   const handleChange = (event) => {
     const { name, value } = event.target
     setFormFields({ ...formFields, [name]: value })
@@ -24,8 +22,9 @@ const SignUpForm = ({ handleAuthWithGoogle, setIsSignInFormOpen }) => {
 
   return (
     <>
-      <form>
+      <form onSubmit={() => {}}>
         <AuthInput
+          isValueHasChanges={!!username}
           label="Username"
           type="text"
           required
@@ -34,6 +33,7 @@ const SignUpForm = ({ handleAuthWithGoogle, setIsSignInFormOpen }) => {
           value={username}
         />
         <AuthInput
+          isValueHasChanges={!!email }
           label="Email address"
           type="email"
           required
@@ -42,6 +42,7 @@ const SignUpForm = ({ handleAuthWithGoogle, setIsSignInFormOpen }) => {
           value={email}
         />
         <AuthInput
+          isValueHasChanges={!!password }
           label="Password"
           type="password"
           required
@@ -50,6 +51,7 @@ const SignUpForm = ({ handleAuthWithGoogle, setIsSignInFormOpen }) => {
           value={password}
         />
         <AuthInput
+          isValueHasChanges={!!confirmPassword}
           label="Confirm password"
           type="password"
           required

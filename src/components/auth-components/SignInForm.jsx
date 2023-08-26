@@ -15,11 +15,13 @@ const SignInForm = ({
           label="Email address"
           type="email"
           isSignInInput={isSignInInput}
+          value=''
         />
         <AuthInput
           label="Password"
           type="password"
           isSignInInput={isSignInInput}
+          value=''
         />
         {/* <!-- Remember me checkbox --> */}
         <RememberPassword />
@@ -49,7 +51,7 @@ const SignInForm = ({
         >
           {/* <!-- Google --> */}
           <BsGoogle />
-          Contenuoue with Google
+          Continue with Google
         </Button>
         <Button
           title="github"
@@ -60,7 +62,7 @@ const SignInForm = ({
         >
           {/* <!-- GitHub--> */}
           <BsGithub />
-          Contenuoue with GitHub
+          Continue with GitHub
         </Button>
       </form>
       <p className="text-center">

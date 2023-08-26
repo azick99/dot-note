@@ -1,16 +1,23 @@
 import { useRef, useState } from 'react'
 import { AiFillFileAdd } from 'react-icons/ai'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import {
   addNewDirectory,
   setIsDirectoryDropdownOpen,
 } from '../../routes/root-nav-route/nav-features/directoriesSlice'
 import { nanoid } from '@reduxjs/toolkit'
 import { useNavigate } from 'react-router-dom'
-import { setPrevId } from '../../routes/notes-route/features/notesSlice'
+import {
+  selectAllToggles,
+  setNextId,
+  setPrevId,
+  setToggleNotes,
+} from '../../routes/notes-route/features/notesSlice'
 
 const AddNewDirectoryInput = ({ directory }) => {
   const [directoryTitle, setDirectoryTitle] = useState('')
+  const toggles = useSelector(selectAllToggles)
+  const hasChanges = toggles.hasChanges
 
   const navigate = useNavigate()
 
@@ -61,7 +68,13 @@ const AddNewDirectoryInput = ({ directory }) => {
         })
       )
     }
-    navigate(`/notes/${id}`)
+    if (!hasChanges) {
+      navigate(`/notes/${id}`)
+    }
+    if (hasChanges) {
+      dispatch(setToggleNotes({ name: 'isChangesSaved' }))
+      dispatch(setNextId(id))
+    }
     dispatch(setPrevId(id))
     setDirectoryTitle('')
   }

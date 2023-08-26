@@ -1,6 +1,9 @@
 import WrapSections from '../../components/htc/WrapSections'
 import { useState } from 'react'
-import { signInWithGooglePopup } from '../../utils/firebase-utils/firebase.utils'
+import {
+  createUserDocumentFromAuth,
+  signInWithGooglePopup,
+} from '../../utils/firebase-utils/firebase.utils'
 import { useDispatch } from 'react-redux'
 import { setUserData } from '../notes-route/features/notesSlice'
 import { useNavigate } from 'react-router-dom'
@@ -16,8 +19,9 @@ const Auth = () => {
   const handleAuthWithGoogle = async () => {
     try {
       const { user } = await signInWithGooglePopup()
+      const userDocRef = await createUserDocumentFromAuth(user)
       dispatch(setUserData(user))
-      console.log(user)
+      
     } catch (err) {
       console.log('Failed to fetch: ' + err)
     } finally {
@@ -40,7 +44,7 @@ const Auth = () => {
             </div>
 
             {/* <!-- Right column container with form --> */}
-            <div className="md:w-8/12 lg:ml-6 bg-slate-300 p-8 rounded-md lg:w-5/12">
+            <div className="md:w-8/12 lg:ml-6 border-slate-300 border-2 p-8 rounded-md lg:w-5/12">
               {isSignInFormOpen ? (
                 <SignInForm
                   handleAuthWithGoogle={handleAuthWithGoogle}
