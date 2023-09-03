@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import './button.style.css'
 
-const RememberPassword = () => {
+const PasswordCheckbox = () => {
   const [rememberPassword, setRememberPassword] = useState(false)
 
   return (
@@ -34,4 +34,4 @@ const RememberPassword = () => {
   )
 }
 
-export default RememberPassword
+export default PasswordCheckbox

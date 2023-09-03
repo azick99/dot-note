@@ -1,9 +1,9 @@
 import { BsGithub, BsGoogle } from 'react-icons/bs'
 import AuthInput from './AuthInput'
 import Button from './Button'
-import RememberPassword from './rememberPassword'
 import { useState } from 'react'
 import { signInAuthWithEmailAndPassword } from '../../utils/firebase-utils/firebase.utils'
+import PasswordCheckbox from './PasswordCheckbox'
 
 const defaultFormFields = {
   email: '',
@@ -67,7 +67,7 @@ const SignInForm = ({
           value={password}
         />
         {/* <!-- Remember me checkbox --> */}
-        <RememberPassword />
+        <PasswordCheckbox/>
         {/* <!-- Submit button --> */}
         <Button
           buttonType="signIn"
