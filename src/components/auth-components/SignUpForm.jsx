@@ -16,10 +16,11 @@ const defaultFormFields = {
 }
 
 const SignUpForm = ({ handleAuthWithGoogle, setIsSignInFormOpen }) => {
+  const [status, setStatus] = useState('idle') //idle | loading | success
   const [formFields, setFormFields] = useState(defaultFormFields)
   const { username, email, password, confirmPassword } = formFields
 
-  const resetFormFields = () =>{
+  const resetFormFields = () => {
     setFormFields(defaultFormFields)
   }
 
@@ -31,15 +32,21 @@ const SignUpForm = ({ handleAuthWithGoogle, setIsSignInFormOpen }) => {
     }
 
     try {
+      setStatus('loading')
       const { user } = await createAuthUserWithEmailAndPassword(email, password)
       await createUserDocumentFromAuth(user, { displayName: username })
-      resetFormFields()
     } catch (error) {
-      if(error.code === 'auth/email-already-in-use'){
+      if (error.code === 'auth/email-already-in-use') {
         alert('Cannot create user email already in use')
-      }else{
+      }if(error.code === 'auth/weak-password'){
+        alert('Password is week try again with strong password')
+      } 
+       else {
         console.log('failed to Sign in ', error)
       }
+    } finally {
+      resetFormFields()
+      setStatus('success')
     }
   }
   const handleChange = (event) => {
@@ -90,12 +97,13 @@ const SignUpForm = ({ handleAuthWithGoogle, setIsSignInFormOpen }) => {
         <RememberPassword />
         {/* <!-- Submit button --> */}
         <Button
-          title="signIn"
+          buttonType="signIn"
           type="submit"
           data-te-ripple-init
           data-te-ripple-color="light"
+          disabled={status === 'loading'}
         >
-          Sign Up
+        {status ==='loading'? 'Loading...': 'Sign Up'}
         </Button>
         {/* <!-- Divider --> */}
         <div className="my-4 flex items-center before:mt-0.5 before:flex-1 before:border-t before:border-neutral-500 after:mt-0.5 after:flex-1 after:border-t after:border-neutral-500">
@@ -105,23 +113,25 @@ const SignUpForm = ({ handleAuthWithGoogle, setIsSignInFormOpen }) => {
         </div>
         <div className="flex gap-4">
           <Button
-            title="google"
+            buttonType="google"
             role="button"
             data-te-ripple-init
             data-te-ripple-color="light"
             type="button"
             onClick={handleAuthWithGoogle}
+            disabled={status === 'loading'}
           >
             {/* <!-- Google --> */}
             <BsGoogle />
             Google
           </Button>
           <Button
-            title="github"
+            buttonType="github"
             role="button"
             data-te-ripple-init
             data-te-ripple-color="light"
             type="button"
+            disabled={status === 'loading'}
           >
             {/* <!-- GitHub--> */}
             <BsGithub />

@@ -2,32 +2,75 @@ import { BsGithub, BsGoogle } from 'react-icons/bs'
 import AuthInput from './AuthInput'
 import Button from './Button'
 import RememberPassword from './rememberPassword'
+import { useState } from 'react'
+import { signInAuthWithEmailAndPassword } from '../../utils/firebase-utils/firebase.utils'
+
+const defaultFormFields = {
+  email: '',
+  password: '',
+}
+
 
 const SignInForm = ({
   isSignInInput,
   setIsSignInFormOpen,
   handleAuthWithGoogle,
 }) => {
+
+  const [formFields, setFormFields] = useState(defaultFormFields)
+
+  const { email, password} = formFields
+
+  const resetFormFields = () =>{
+    setFormFields(defaultFormFields)
+  }
+
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+    try {
+      const respose = await signInAuthWithEmailAndPassword(email, password)
+      resetFormFields()
+      console.log(respose)
+    } catch (error) {
+      console.log('Error in fetching', error)
+      if(error.code === 'auth/user-not-found'){
+        alert('User is not found!')
+      }
+    }
+}
+  const handleChange = (event) => {
+    const { name, value } = event.target
+    setFormFields({ ...formFields, [name]: value })
+  }
+
   return (
     <>
-      <form>
+      <form onSubmit={handleSubmit}>
         <AuthInput
+        isValueHasChanges={!!email}
           label="Email address"
           type="email"
           isSignInInput={isSignInInput}
-          value=''
+          required
+          onChange={handleChange}
+          name="email"
+          value={email}
         />
         <AuthInput
+        isValueHasChanges={!!password}
           label="Password"
           type="password"
           isSignInInput={isSignInInput}
-          value=''
+          required
+          onChange={handleChange}
+          name="password"
+          value={password}
         />
         {/* <!-- Remember me checkbox --> */}
         <RememberPassword />
         {/* <!-- Submit button --> */}
         <Button
-          title="signIn"
+          buttonType="signIn"
           type="submit"
           data-te-ripple-init
           data-te-ripple-color="light"
@@ -42,7 +85,7 @@ const SignInForm = ({
         </div>
 
         <Button
-          title="google"
+          buttonType="google"
           role="button"
           data-te-ripple-init
           data-te-ripple-color="light"
@@ -54,7 +97,7 @@ const SignInForm = ({
           Continue with Google
         </Button>
         <Button
-          title="github"
+          buttonType="github"
           role="button"
           data-te-ripple-init
           data-te-ripple-color="light"
