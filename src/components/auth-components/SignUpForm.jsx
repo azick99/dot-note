@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import AuthInput from './AuthInput'
 import Button from './Button'
-import RememberPassword from './rememberPassword'
 import { BsGithub, BsGoogle } from 'react-icons/bs'
 import {
   createAuthUserWithEmailAndPassword,
   createUserDocumentFromAuth,
 } from '../../utils/firebase-utils/firebase.utils'
+import PasswordCheckbox from './PasswordCheckbox'
 
 const defaultFormFields = {
   username: '',
@@ -94,7 +94,7 @@ const SignUpForm = ({ handleAuthWithGoogle, setIsSignInFormOpen }) => {
           value={confirmPassword}
         />
         {/* <!-- Remember me checkbox --> */}
-        <RememberPassword />
+        <PasswordCheckbox/>
         {/* <!-- Submit button --> */}
         <Button
           buttonType="signIn"
