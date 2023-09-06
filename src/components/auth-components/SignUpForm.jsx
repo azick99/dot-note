@@ -15,7 +15,12 @@ const defaultFormFields = {
   confirmPassword: '',
 }
 
-const SignUpForm = ({ handleAuthWithGoogle, setIsSignInFormOpen }) => {
+const SignUpForm = ({
+  handleAuthWithGoogle,
+  setIsSignInFormOpen,
+  handleAuthWithGitHub,
+  userDispatcher,
+}) => {
   const [status, setStatus] = useState('idle') //idle | loading | success
   const [formFields, setFormFields] = useState(defaultFormFields)
   const { username, email, password, confirmPassword } = formFields
@@ -30,23 +35,26 @@ const SignUpForm = ({ handleAuthWithGoogle, setIsSignInFormOpen }) => {
       alert('passords do not match')
       return
     }
-
     try {
       setStatus('loading')
       const { user } = await createAuthUserWithEmailAndPassword(email, password)
       await createUserDocumentFromAuth(user, { displayName: username })
+      userDispatcher(user)
+      resetFormFields()
+      setStatus('success')
+      console.log(user)
     } catch (error) {
       if (error.code === 'auth/email-already-in-use') {
         alert('Cannot create user email already in use')
-      }if(error.code === 'auth/weak-password'){
-        alert('Password is week try again with strong password')
-      } 
-       else {
-        console.log('failed to Sign in ', error)
+        setStatus('idle')
       }
-    } finally {
-      resetFormFields()
-      setStatus('success')
+      if (error.code === 'auth/weak-password') {
+        alert('Password is week try again with strong password')
+        setStatus('idle')
+      } else {
+        console.log('failed to Sign in ', error)
+        setStatus('idle')
+      }
     }
   }
   const handleChange = (event) => {
@@ -94,7 +102,7 @@ const SignUpForm = ({ handleAuthWithGoogle, setIsSignInFormOpen }) => {
           value={confirmPassword}
         />
         {/* <!-- Remember me checkbox --> */}
-        <PasswordCheckbox/>
+        <PasswordCheckbox />
         {/* <!-- Submit button --> */}
         <Button
           buttonType="signIn"
@@ -103,7 +111,7 @@ const SignUpForm = ({ handleAuthWithGoogle, setIsSignInFormOpen }) => {
           data-te-ripple-color="light"
           disabled={status === 'loading'}
         >
-        {status ==='loading'? 'Loading...': 'Sign Up'}
+          {status === 'loading' ? 'Loading...' : 'Sign Up'}
         </Button>
         {/* <!-- Divider --> */}
         <div className="my-4 flex items-center before:mt-0.5 before:flex-1 before:border-t before:border-neutral-500 after:mt-0.5 after:flex-1 after:border-t after:border-neutral-500">
@@ -132,6 +140,7 @@ const SignUpForm = ({ handleAuthWithGoogle, setIsSignInFormOpen }) => {
             data-te-ripple-color="light"
             type="button"
             disabled={status === 'loading'}
+            onClick={handleAuthWithGitHub}
           >
             {/* <!-- GitHub--> */}
             <BsGithub />

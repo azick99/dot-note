@@ -3,9 +3,11 @@ import { IoIosSave } from 'react-icons/io'
 import { useDispatch, useSelector } from 'react-redux'
 import { removeDirectory } from '../root-nav-route/nav-features/directoriesSlice'
 import { NavLink, useNavigate } from 'react-router-dom'
-import { selectUserData } from './features/notesSlice'
+import { selectUserData, setSignOut } from './features/notesSlice'
+import HeaderDropdown from '../../components/header-dropdown/HeaderDropdown'
 
 const Header = ({ content, handleSaveClick, hasChanges, directoryTitle }) => {
+  
   const userData = useSelector(selectUserData)
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -15,12 +17,31 @@ const Header = ({ content, handleSaveClick, hasChanges, directoryTitle }) => {
     navigate('/general')
   }
 
+  const handleSignOut = () => {
+    dispatch(setSignOut())
+  }
+
+  let signInContent = <NavLink to="/auth">Sign in</NavLink>
+
+  if (userData) {
+    signInContent = userData.photoURL ? (
+      <HeaderDropdown
+        photoUrl={userData.photoURL}
+        handleSignOut={handleSignOut}
+      />
+    ) : (
+      <button type="button" onClick={handleSignOut}>
+        Sign out
+      </button>
+    )
+  }
+
   return (
     <header
       id="header"
       className="p-5 flex items-center justify-between w-full h-[70px]"
     >
-      <div className="flex gap-2 items-center">{directoryTitle}</div>
+      <div className="flex gap-2 items-center relative">{directoryTitle}</div>
       <div className="flex justify-self-end gap-10 items-center mr-10">
         {content && (
           <>
@@ -41,15 +62,7 @@ const Header = ({ content, handleSaveClick, hasChanges, directoryTitle }) => {
             </button>
           </>
         )}
-        {userData === null ? (
-          <NavLink to="/auth">Sign in</NavLink>
-        ) : (
-          <img
-            src={userData.photoURL}
-            className="w-10 h-10 rounded-full shadow-lg"
-            alt="Avatar"
-          />
-        )}
+        {signInContent}
       </div>
     </header>
   )

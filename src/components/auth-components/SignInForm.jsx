@@ -10,18 +10,17 @@ const defaultFormFields = {
   password: '',
 }
 
-
 const SignInForm = ({
   isSignInInput,
   setIsSignInFormOpen,
   handleAuthWithGoogle,
+  handleAuthWithGitHub,
+  userDispatcher,
 }) => {
-
   const [formFields, setFormFields] = useState(defaultFormFields)
+  const { email, password } = formFields
 
-  const { email, password} = formFields
-
-  const resetFormFields = () =>{
+  const resetFormFields = () => {
     setFormFields(defaultFormFields)
   }
 
@@ -29,15 +28,15 @@ const SignInForm = ({
     event.preventDefault()
     try {
       const respose = await signInAuthWithEmailAndPassword(email, password)
+      userDispatcher(respose)
       resetFormFields()
-      console.log(respose)
     } catch (error) {
       console.log('Error in fetching', error)
-      if(error.code === 'auth/user-not-found'){
+      if (error.code === 'auth/user-not-found') {
         alert('User is not found!')
       }
     }
-}
+  }
   const handleChange = (event) => {
     const { name, value } = event.target
     setFormFields({ ...formFields, [name]: value })
@@ -47,7 +46,7 @@ const SignInForm = ({
     <>
       <form onSubmit={handleSubmit}>
         <AuthInput
-        isValueHasChanges={!!email}
+          isValueHasChanges={!!email}
           label="Email address"
           type="email"
           isSignInInput={isSignInInput}
@@ -57,7 +56,7 @@ const SignInForm = ({
           value={email}
         />
         <AuthInput
-        isValueHasChanges={!!password}
+          isValueHasChanges={!!password}
           label="Password"
           type="password"
           isSignInInput={isSignInInput}
@@ -67,7 +66,7 @@ const SignInForm = ({
           value={password}
         />
         {/* <!-- Remember me checkbox --> */}
-        <PasswordCheckbox/>
+        <PasswordCheckbox />
         {/* <!-- Submit button --> */}
         <Button
           buttonType="signIn"
@@ -102,6 +101,7 @@ const SignInForm = ({
           data-te-ripple-init
           data-te-ripple-color="light"
           type="button"
+          onClick={handleAuthWithGitHub}
         >
           {/* <!-- GitHub--> */}
           <BsGithub />

@@ -3,6 +3,7 @@ import { useState } from 'react'
 import {
   createUserDocumentFromAuth,
   signInWithGooglePopup,
+  signInWithGitHubPopup,
 } from '../../utils/firebase-utils/firebase.utils'
 import { useDispatch } from 'react-redux'
 import { setUserData } from '../notes-route/features/notesSlice'
@@ -16,16 +17,34 @@ const Auth = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
+  const userDispatcher = (user) => {
+    const userData = {
+      id: user.uid,
+      email: user.email,
+      displayName: user.displayName,
+      photoURL: user.photoURL,
+    }
+    dispatch(setUserData(userData))
+    navigate('/notes/1')
+  }
+
   const handleAuthWithGoogle = async () => {
     try {
       const { user } = await signInWithGooglePopup()
       const userDocRef = await createUserDocumentFromAuth(user)
-      dispatch(setUserData(user))
-      
+      userDispatcher(user)
     } catch (err) {
       console.log('Failed to fetch: ' + err)
-    } finally {
-      navigate('/notes/1')
+    }
+  }
+
+  const handleAuthWithGitHub = async () => {
+    try {
+      const user = await signInWithGitHubPopup()
+      const userDocRef = await createUserDocumentFromAuth(user)
+      userDispatcher(user)
+    } catch (err) {
+      console.log('Failed to fetch: ' + err)
     }
   }
 
@@ -50,11 +69,15 @@ const Auth = () => {
                   handleAuthWithGoogle={handleAuthWithGoogle}
                   isSignInFormOpen={isSignInFormOpen}
                   setIsSignInFormOpen={setIsSignInFormOpen}
+                  handleAuthWithGitHub={handleAuthWithGitHub}
+                  userDispatcher={userDispatcher}
                 />
               ) : (
                 <SignUpForm
                   handleAuthWithGoogle={handleAuthWithGoogle}
                   setIsSignInFormOpen={setIsSignInFormOpen}
+                  handleAuthWithGitHub={handleAuthWithGitHub}
+                  userDispatcher={userDispatcher}
                 />
               )}
             </div>

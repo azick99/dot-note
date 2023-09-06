@@ -20,7 +20,17 @@ const notesSlice = createSlice({
   initialState,
   reducers: {
     setUserData(state, action) {
-      state.userData = action.payload
+      const { id, email, displayName, photoURL } = action.payload
+      const userData = {
+        id,
+        email,
+        displayName,
+        photoURL,
+      }
+      state.userData = userData
+    },
+    setSignOut(state, action) {
+      state.userData = null
     },
     setPrevId(state, action) {
       state.directoryId.prevId = action.payload
@@ -69,6 +79,7 @@ export const selectPrevId = (state) => state.notes.directoryId.prevId
 export const selectNextId = (state) => state.notes.directoryId.nextId
 export const selectUserData = (state) => state.notes.userData
 
-export const { setToggleNotes, setPrevId, setNextId, setUserData } = notesSlice.actions
+export const { setToggleNotes, setPrevId, setNextId, setUserData, setSignOut } =
+  notesSlice.actions
 
 export default notesSlice.reducer
