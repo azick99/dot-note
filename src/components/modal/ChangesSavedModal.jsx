@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux'
 import {
-  selectNextId,
+  selectNavigateToId,
   setToggleNotes,
 } from '../../routes/notes-route/features/notesSlice'
 import { useNavigate } from 'react-router-dom'
@@ -8,21 +8,21 @@ import { useNavigate } from 'react-router-dom'
 const ChangesSavedModal = ({ toggles, handleSaveClick }) => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const navigateId = useSelector(selectNavigateToId)
   const isChangesSaved = toggles.isChangesSaved
-  const nextId = useSelector(selectNextId)
-
+  
   const handleSaveForwardClick = () => {
     handleSaveClick()
+    navigate(navigateId)
     dispatch(setToggleNotes({ name: 'isChangesNotSaved' }))
-    navigate(`/notes/${nextId}`)
   }
 
   const handleNotSaveChanges = () => {
     dispatch(setToggleNotes({ name: 'isChangesNotSaved' }))
-    navigate(`/notes/${nextId}`)
+    dispatch(setToggleNotes({ name: 'hasNoChanges' }))
+    navigate(navigateId)
   }
 
-  // console.log(nextId)
   let modalContent
   if (isChangesSaved) {
     modalContent = (

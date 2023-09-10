@@ -2,17 +2,12 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
   userData: null,
-  directoryId: {
-    prevId: '1',
-    nextId: '2',
-  },
   toggles: {
     isSidebarOpen: false,
     isChangesSaved: false,
     hasChanges: false,
-    isEditorOpen: true,
-    isNoteTitleOpened: false,
   },
+  navigateToId: '',
 }
 
 const notesSlice = createSlice({
@@ -32,15 +27,10 @@ const notesSlice = createSlice({
     setSignOut(state, action) {
       state.userData = null
     },
-    setPrevId(state, action) {
-      state.directoryId.prevId = action.payload
-    },
-    setNextId(state, action) {
-      state.directoryId.nextId = action.payload
-    },
+
     setToggleNotes(state, action) {
       const { name, noteChanges } = action.payload
-      const { isSidebarOpen, isEditorOpen } = state.toggles
+      const { isSidebarOpen } = state.toggles
 
       switch (name) {
         case 'sidebarToggle': {
@@ -55,10 +45,6 @@ const notesSlice = createSlice({
           state.toggles.hasChanges = false
           break
         }
-        case 'isEditorOpen': {
-          state.toggles.isEditorOpen = !isEditorOpen
-          break
-        }
         case 'isChangesSaved': {
           state.toggles.isChangesSaved = true
           break
@@ -71,15 +57,16 @@ const notesSlice = createSlice({
           throw new Error('problems appeared')
       }
     },
+    setNavigateTo(state, action) {
+      state.navigateToId = action.payload
+    },
   },
 })
 
 export const selectAllToggles = (state) => state.notes.toggles
-export const selectPrevId = (state) => state.notes.directoryId.prevId
-export const selectNextId = (state) => state.notes.directoryId.nextId
 export const selectUserData = (state) => state.notes.userData
-
-export const { setToggleNotes, setPrevId, setNextId, setUserData, setSignOut } =
+export const selectNavigateToId = (state) => state.notes.navigateToId
+export const { setToggleNotes, setUserData, setSignOut, setNavigateTo } =
   notesSlice.actions
 
 export default notesSlice.reducer

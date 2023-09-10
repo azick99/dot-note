@@ -11,18 +11,21 @@ import 'react-quill/dist/quill.snow.css'
 import ChangesSavedModal from '../../components/modal/ChangesSavedModal'
 
 const RenderingSection = ({ content }) => {
-  const [noteTitle, setNoteTitle] = useState(content?.noteTitle)
-  const [noteTags, setNoteTags] = useState(content?.tags)
-  const [noteContent, setNoteContent] = useState(content?.noteContent)
-
+  const noteFields = {
+    noteTitle: content?.noteTitle,
+    noteTags: content?.tags,
+    noteContent: content?.noteContent,
+  }
+  const [noteContentFields, setNoteContentFields] = useState(noteFields)
+  const [isEditorOpen, setIsEditorOpen] = useState(true)
   const [isEditorToolbarOpen, setIsEditorToolBarOpen] = useState(true)
 
   const toggles = useSelector(selectAllToggles)
   const hasChanges = toggles.hasChanges
-  const isEditorOpen = toggles.isEditorOpen
 
   const dispatch = useDispatch()
 
+  const { noteTitle, noteTags, noteContent } = noteContentFields
   // Check if there are any changes in noteTitle, noteTags, or noteContent
   const hasTitleChanged = noteTitle !== content?.noteTitle
   const hasTagsChanged = noteTags !== content?.tags
@@ -31,20 +34,20 @@ const RenderingSection = ({ content }) => {
   const noteChanges = hasTitleChanged || hasTagsChanged || hasContentChanged
 
   useEffect(() => {
-    setNoteTitle(content?.noteTitle)
-    setNoteTags(content?.tags)
-    setNoteContent(content?.noteContent)
+    setNoteContentFields(noteFields)
   }, [content])
 
   useEffect(() => {
     dispatch(setToggleNotes({ name: 'hasChanges', noteChanges }))
   }, [noteChanges, content])
-  
+
   const handleContentChange = (newContent) => {
     // Update the noteContent state when the editor content changes
-    setNoteContent(newContent)
+    setNoteContentFields({
+      ...noteContentFields,
+      noteContent: newContent,
+    })
   }
-
 
   //Header save handle
   const handleSaveClick = () => {
@@ -80,7 +83,12 @@ const RenderingSection = ({ content }) => {
               type="text"
               className=" pl-5 rounded-md border-[.5px]  border-solid border-[#ccc]"
               value={noteTags}
-              onChange={(e) => setNoteTags(e.target.value)}
+              onChange={(e) =>
+                setNoteContentFields({
+                  ...noteContentFields,
+                  noteTags: e.target.value,
+                })
+              }
             />
           </div>
           <button onClick={() => setIsEditorToolBarOpen(!isEditorToolbarOpen)}>
@@ -129,7 +137,7 @@ const RenderingSection = ({ content }) => {
         {editorContent}
         <Preview
           noteContent={noteContent}
-          setToggleNotes={setToggleNotes}
+          setIsEditorOpen={setIsEditorOpen}
           key={content.id}
         />
       </main>

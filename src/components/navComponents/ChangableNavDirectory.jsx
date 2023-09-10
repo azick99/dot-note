@@ -10,33 +10,24 @@ import AddNewDirectoryInput from './AddNewDirectoryInput'
 import EditDirectoryInput from './EditDirectoryInput'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons'
-import {
-  selectAllToggles,
-  selectPrevId,
-  setNextId,
-  setPrevId,
-  setToggleNotes,
-} from '../../routes/notes-route/features/notesSlice'
+import { selectAllToggles } from '../../routes/notes-route/features/notesSlice'
+
+import ModalToggleNavBar from './ModalToggleNavBar'
 
 const ChangableNavDirectory = () => {
   const [editDirectoryId, setEditDirectoryId] = useState('')
+  const [directoryId, setDirectoryId] = useState('1')
 
   const dispatch = useDispatch()
   const directories = useSelector(selectAllDirectories)
 
   const toggles = useSelector(selectAllToggles)
-  const prevId = useSelector(selectPrevId)
   const hasChanges = toggles.hasChanges
 
   const handleFolderDropdown = (directoryId) =>
     dispatch(
       setIsDirectoryDropdownOpen({ directoryId, name: 'folderDropdown' })
     )
-
-  const handleModalDropdown = (id) => {
-    dispatch(setToggleNotes({ name: 'isChangesSaved' }))
-    dispatch(setNextId(id))
-  }
 
   return (
     <ul className="flex flex-col">
@@ -57,21 +48,16 @@ const ChangableNavDirectory = () => {
                   ) : (
                     <div key={content.id} className="relative">
                       {hasChanges ? (
-                        <li
-                          className={`li-directory ${
-                            content.id === prevId ? 'bg-light-grayish/40' : ''
-                          } !pl-14 bg flex items-center gap-2 cursor-pointer font-semibold`}
-                          onClick={() => handleModalDropdown(content.id)}
-                        >
-                          <div className="w-[10rem] h-[1.5rem] overflow-x-auto">
-                            🗒️{content.title}
-                          </div>
-                        </li>
+                        <ModalToggleNavBar
+                          content={content}
+                          directoryId={directoryId}
+                          setDirectoryId={setDirectoryId}
+                        />
                       ) : (
                         <NavLink
                           to={`/notes/${content.id}`}
                           className="li-directory !pl-14  flex items-center gap-2 font-semibold "
-                          onClick={() => dispatch(setPrevId(content.id))}
+                          onClick={() => setDirectoryId(content.id)}
                         >
                           <div className="w-[10rem] h-[1.5rem] overflow-x-auto">
                             🗒️{content.title}
@@ -93,7 +79,7 @@ const ChangableNavDirectory = () => {
                   )
                 )}
               </ul>
-              <AddNewDirectoryInput directory={directory} />
+              <AddNewDirectoryInput directory={directory} setDirectoryId={setDirectoryId}/>
             </Fragment>
           )
         }

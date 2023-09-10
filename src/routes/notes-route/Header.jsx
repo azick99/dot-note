@@ -3,11 +3,15 @@ import { IoIosSave } from 'react-icons/io'
 import { useDispatch, useSelector } from 'react-redux'
 import { removeDirectory } from '../root-nav-route/nav-features/directoriesSlice'
 import { NavLink, useNavigate } from 'react-router-dom'
-import { selectUserData, setSignOut } from './features/notesSlice'
+import {
+  selectUserData,
+  setSignOut,
+  setToggleNotes,
+} from './features/notesSlice'
 import HeaderDropdown from '../../components/header-dropdown/HeaderDropdown'
+import { handleNavigateToId } from '../../utils/halper-funtions/toggle'
 
 const Header = ({ content, handleSaveClick, hasChanges, directoryTitle }) => {
-  
   const userData = useSelector(selectUserData)
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -16,12 +20,21 @@ const Header = ({ content, handleSaveClick, hasChanges, directoryTitle }) => {
     dispatch(removeDirectory({ contentId: content.id }))
     navigate('/general')
   }
-
+  const handleModalDropdown = (directoryId) => {
+    dispatch(setToggleNotes({ name: 'isChangesSaved' }))
+    handleNavigateToId(directoryId, dispatch)
+  }
   const handleSignOut = () => {
     dispatch(setSignOut())
   }
 
-  let signInContent = <NavLink to="/auth">Sign in</NavLink>
+  let signInContent = hasChanges ? (
+    <button type="button" onClick={() => handleModalDropdown('auth')}>
+      Sign in
+    </button>
+  ) : (
+    <NavLink to="/auth">Sign in</NavLink>
+  )
 
   if (userData) {
     signInContent = userData.photoURL ? (

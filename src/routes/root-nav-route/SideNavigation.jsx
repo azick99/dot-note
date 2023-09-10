@@ -4,13 +4,23 @@ import StableNavDirectory from '../../components/navComponents/StableNavDirector
 import { FcHome, FcUpload, FcEmptyTrash } from 'react-icons/fc'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { selectAllToggles, setToggleNotes } from '../notes-route/features/notesSlice'
-
+import {
+  selectAllToggles,
+  setToggleNotes,
+} from '../notes-route/features/notesSlice'
+import { handleNavigateToId } from '../../utils/halper-funtions/toggle'
 
 const SideNavigation = () => {
-  const isSidebarOpen  = useSelector(selectAllToggles).isSidebarOpen
+  const isSidebarOpen = useSelector(selectAllToggles).isSidebarOpen
+  const toggles = useSelector(selectAllToggles)
+  const hasChanges = toggles.hasChanges
 
   const dispatch = useDispatch()
+
+  const handleModalDropdown = (directoryId) => {
+    dispatch(setToggleNotes({ name: 'isChangesSaved' }))
+    handleNavigateToId(directoryId, dispatch)
+  }
 
   const handleSidebarToggle = () =>
     dispatch(setToggleNotes({ name: 'sidebarToggle' }))
@@ -43,42 +53,78 @@ const SideNavigation = () => {
               <h1>Dot note</h1>
             </div>
 
-            <StableNavDirectory />
+            <StableNavDirectory
+              hasChanges={hasChanges}
+              handleModalDropdown={handleModalDropdown}
+            />
 
             <hr />
 
             <ul className="directory">
               <li className="pl-6 py-2">Teamspaces</li>
               {/*if costum css exist they come first and can find in index.css */}
-              <NavLink
-                to="/general"
-                className="li-directory flex items-center gap-2 pl-1 "
-              >
-                <span className="bg-light-grayish/30 rounded-md w-5 h-5 flex items-center justify-center">
-                  <FcHome />
-                </span>
-                <span>General</span>
-              </NavLink>
+              {hasChanges ? (
+                <li
+                  className="li-directory flex items-center gap-2 pl-1 cursor-pointer"
+                  onClick={() => handleModalDropdown('general')}
+                >
+                  <span className="bg-light-grayish/30 rounded-md w-5 h-5 flex items-center justify-center">
+                    <FcHome />
+                  </span>
+                  <span>General</span>
+                </li>
+              ) : (
+                <NavLink
+                  to="/general"
+                  className="li-directory flex items-center gap-2 pl-1 "
+                >
+                  <span className="bg-light-grayish/30 rounded-md w-5 h-5 flex items-center justify-center">
+                    <FcHome />
+                  </span>
+                  <span>General</span>
+                </NavLink>
+              )}
               <ChangableNavDirectory />
             </ul>
 
             <hr />
 
             <ul className="directory">
-              <NavLink
-                to="/uploaded"
-                className="li-directory flex items-center gap-2"
-              >
-                <FcUpload />
-                <span>Uploaded</span>
-              </NavLink>
-              <NavLink
-                to="/trash"
-                className="li-directory flex items-center gap-2"
-              >
-                <FcEmptyTrash />
-                <span>Trash</span>
-              </NavLink>
+              {hasChanges ? (
+                <>
+                  <li
+                    className="li-directory flex items-center gap-2 cursor-pointer"
+                    onClick={() => handleModalDropdown('uploaded')}
+                  >
+                    <FcUpload />
+                    <span>Uploaded</span>
+                  </li>
+                  <li
+                    className="li-directory flex items-center gap-2 cursor-pointer"
+                    onClick={() => handleModalDropdown('trash')}
+                  >
+                    <FcEmptyTrash />
+                    <span>Trash</span>
+                  </li>
+                </>
+              ) : (
+                <>
+                  <NavLink
+                    to="/uploaded"
+                    className="li-directory flex items-center gap-2"
+                  >
+                    <FcUpload />
+                    <span>Uploaded</span>
+                  </NavLink>
+                  <NavLink
+                    to="/trash"
+                    className="li-directory flex items-center gap-2"
+                  >
+                    <FcEmptyTrash />
+                    <span>Trash</span>
+                  </NavLink>
+                </>
+              )}
             </ul>
           </nav>
         )}

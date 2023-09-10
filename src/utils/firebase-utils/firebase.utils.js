@@ -87,7 +87,6 @@ githubProvider.setCustomParameters({
 export const signInWithGitHubPopup = async () => {
   try {
     const result = await signInWithPopup(auth, githubProvider)
-    console.log(result.user)
     return result.user
   } catch (error) {
     console.error('GitHub Sign-In Error', error)

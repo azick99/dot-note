@@ -1,13 +1,9 @@
 import HTMLReactParser from 'html-react-parser'
-import { useDispatch } from 'react-redux'
 import './preview.css'
 
-const Preview = ({ noteContent, setToggleNotes }) => {
-  const dispatch = useDispatch()
+const Preview = ({ noteContent, setIsEditorOpen }) => {
+  const handleEditorToggle = () => setIsEditorOpen((prev) => !prev)
 
-  const handleEditorToggle = () =>
-    dispatch(setToggleNotes({ name: 'isEditorOpen' }))
-    
   return (
     <section id="preview">
       <h2 className="flex justify-end mr-10 mb-5">Preview</h2>
@@ -19,7 +15,9 @@ const Preview = ({ noteContent, setToggleNotes }) => {
         >
           =
         </button>
-        <div className="h-[27rem] overflow-y-auto pl-5 pt-10">{HTMLReactParser(noteContent)}</div>
+        <div className="h-[27rem] overflow-y-auto pl-5 pt-10">
+          {HTMLReactParser(noteContent)}
+        </div>
       </div>
     </section>
   )

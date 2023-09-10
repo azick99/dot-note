@@ -9,12 +9,10 @@ import { nanoid } from '@reduxjs/toolkit'
 import { useNavigate } from 'react-router-dom'
 import {
   selectAllToggles,
-  setNextId,
-  setPrevId,
   setToggleNotes,
 } from '../../routes/notes-route/features/notesSlice'
 
-const AddNewDirectoryInput = ({ directory }) => {
+const AddNewDirectoryInput = ({ directory, setDirectoryId }) => {
   const [directoryTitle, setDirectoryTitle] = useState('')
   const toggles = useSelector(selectAllToggles)
   const hasChanges = toggles.hasChanges
@@ -59,6 +57,7 @@ const AddNewDirectoryInput = ({ directory }) => {
 
   const handleAddClick = () => {
     const id = nanoid()
+
     if (directoryTitle) {
       dispatch(addNewDirectory({ id, title: directoryTitle, directoryId }))
       dispatch(
@@ -73,10 +72,9 @@ const AddNewDirectoryInput = ({ directory }) => {
     }
     if (hasChanges) {
       dispatch(setToggleNotes({ name: 'isChangesSaved' }))
-      dispatch(setNextId(id))
     }
-    dispatch(setPrevId(id))
     setDirectoryTitle('')
+    setDirectoryId(id)
   }
 
   if (directory.isAddClicked) {
