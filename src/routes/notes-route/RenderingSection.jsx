@@ -34,7 +34,11 @@ const RenderingSection = ({ content }) => {
   const noteChanges = hasTitleChanged || hasTagsChanged || hasContentChanged
 
   useEffect(() => {
-    setNoteContentFields(noteFields)
+    setNoteContentFields({
+      noteTitle: content?.noteTitle,
+      noteTags: content?.tags,
+      noteContent: content?.noteContent,
+    })
   }, [content])
 
   useEffect(() => {
