@@ -12,6 +12,8 @@ export const directories = [
         noteTitle: 'Welcome Page',
         tags: 'html css',
         noteContent: '<p>Hello world</p>',
+        createdAt: 'Thu Sep 5 2023 13:58:11',
+        createdBy: 'Aziz',
       },
       {
         id: '2',
@@ -19,6 +21,8 @@ export const directories = [
         noteTitle: 'Hello page',
         tags: 'html',
         noteContent: '<p>I am here</p>',
+        createdAt: 'Thu Sep 6 2023 13:58:11',
+        createdBy: 'Azick',
       },
     ],
   },

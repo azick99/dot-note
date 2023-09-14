@@ -12,7 +12,7 @@ const General = () => {
             <span className="bg-light-grayish/30 rounded-md w-5 h-5 flex items-center justify-center">
               <FcHome />
             </span>
-            <p className="font-bold">General </p>
+            <h1 className="font-bold">General </h1>
           </>
         }
       />

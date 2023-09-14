@@ -9,12 +9,17 @@ import { nanoid } from '@reduxjs/toolkit'
 import { useNavigate } from 'react-router-dom'
 import {
   selectAllToggles,
+  selectUserData,
   setToggleNotes,
 } from '../../routes/notes-route/features/notesSlice'
+import EditButton from '../buttons/EditButton'
 
 const AddNewDirectoryInput = ({ directory, setDirectoryId }) => {
   const [directoryTitle, setDirectoryTitle] = useState('')
   const toggles = useSelector(selectAllToggles)
+  const userData = useSelector(selectUserData)
+  const username = userData ? userData?.displayName : 'unknown'
+
   const hasChanges = toggles.hasChanges
 
   const navigate = useNavigate()
@@ -59,7 +64,9 @@ const AddNewDirectoryInput = ({ directory, setDirectoryId }) => {
     const id = nanoid()
 
     if (directoryTitle) {
-      dispatch(addNewDirectory({ id, title: directoryTitle, directoryId }))
+      dispatch(
+        addNewDirectory({ id, title: directoryTitle, directoryId, username })
+      )
       dispatch(
         setIsDirectoryDropdownOpen({
           directoryId,
@@ -89,22 +96,12 @@ const AddNewDirectoryInput = ({ directory, setDirectoryId }) => {
           ref={inputRef}
           className="bg-white border-light-grayish border-solid border-[2px] rounded-md w-[8rem] transition px-2 font-medium outline-none"
         />
-        <button
-          type="button"
-          aria-label="add new title"
-          className="flex items-center bg-white/60 rounded-md py-[1px] px-3 border-[1px] border-solid border-almost-dark/30 hover:bg-white  hover:border-light-blue"
-          onClick={handleAddClick}
-        >
+        <EditButton aria-label="add new title" onClick={handleAddClick}>
           Add
-        </button>
-        <button
-          type="button"
-          aria-label="cancel dropdown"
-          className="flex items-center bg-white/60 rounded-md py-[1px] px-3 border-[1px] border-solid border-almost-dark/30 hover:bg-white  hover:border-light-blue"
-          onClick={cancelDisptach}
-        >
+        </EditButton>
+        <EditButton aria-label="cancel dropdown" onClick={cancelDisptach}>
           X
-        </button>
+        </EditButton>
       </div>
     )
   }

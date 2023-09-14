@@ -13,6 +13,7 @@ import { faPenToSquare } from '@fortawesome/free-solid-svg-icons'
 import { selectAllToggles } from '../../routes/notes-route/features/notesSlice'
 
 import ModalToggleNavBar from './ModalToggleNavBar'
+import EditButton from '../buttons/EditButton'
 
 const ChangableNavDirectory = () => {
   const [editDirectoryId, setEditDirectoryId] = useState('')
@@ -28,6 +29,7 @@ const ChangableNavDirectory = () => {
     dispatch(
       setIsDirectoryDropdownOpen({ directoryId, name: 'folderDropdown' })
     )
+
 
   return (
     <ul className="flex flex-col">
@@ -64,22 +66,24 @@ const ChangableNavDirectory = () => {
                           </div>
                         </NavLink>
                       )}
-                      <button
-                        type="button"
+                      <EditButton
                         aria-label="edit"
-                        className=" flex self-start items-center bg-white/70 rounded-md p-1 border-[1px] border-solid border-almost-dark/30 hover:bg-white  hover:border-light-blue absolute z-10 top-[10px] right-8"
+                        title="nav-edit"
                         onClick={() => setEditDirectoryId(content.id)}
                       >
                         <FontAwesomeIcon
                           icon={faPenToSquare}
                           className="h-3 w-3"
                         />
-                      </button>
+                      </EditButton>
                     </div>
                   )
                 )}
               </ul>
-              <AddNewDirectoryInput directory={directory} setDirectoryId={setDirectoryId}/>
+              <AddNewDirectoryInput
+                directory={directory}
+                setDirectoryId={setDirectoryId}
+              />
             </Fragment>
           )
         }

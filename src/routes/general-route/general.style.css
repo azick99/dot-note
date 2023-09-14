@@ -1,0 +1,19 @@
+.list{
+    @apply flex flex-col
+}
+
+.medium{
+    @apply grid grid-cols-6
+}
+.large{
+    @apply grid grid-cols-3
+}
+
+.note-list{
+    @apply grid grid-cols-3
+}
+
+.medium > .note-list,
+.large > .note-list{
+    @apply grid grid-cols-2
+}

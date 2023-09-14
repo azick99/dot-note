@@ -16,11 +16,17 @@ const directorySlice = createSlice({
       toggle(state, directoryId, name)
     },
     addNewDirectory(state, action) {
-      const { id, title, directoryId } = action.payload
-
+      const { id, title, directoryId, username } = action.payload
+      const date = new Date()
+      const time = `${date.getHours()}:${date
+        .getMinutes()
+        .toString()}:${date.getSeconds()}`
+        
       const newContent = {
-        id: id,
-        title: title,
+        id,
+        title,
+        createdAt: date.toDateString() + ' ' + time,
+        createdBy: username,
         noteTitle: 'New page',
         tags: 'new',
         noteContent: '<p><br></p>',

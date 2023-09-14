@@ -9,7 +9,10 @@ import {
   setToggleNotes,
 } from './features/notesSlice'
 import HeaderDropdown from '../../components/header-dropdown/HeaderDropdown'
-import { handleNavigateToId } from '../../utils/halper-funtions/toggle'
+import {
+  handleNavigateToId,
+  handleRemoveDirectory,
+} from '../../utils/halper-funtions/helperFunctions'
 
 const Header = ({ content, handleSaveClick, hasChanges, directoryTitle }) => {
   const userData = useSelector(selectUserData)
@@ -17,11 +20,13 @@ const Header = ({ content, handleSaveClick, hasChanges, directoryTitle }) => {
   const navigate = useNavigate()
 
   const handleRemoveClick = () => {
-    dispatch(removeDirectory({ contentId: content.id }))
+    //hepler functions
+    dispatch(handleRemoveDirectory(content.id))
     navigate('/general')
   }
   const handleModalDropdown = (directoryId) => {
     dispatch(setToggleNotes({ name: 'isChangesSaved' }))
+    //helperFunction.js
     handleNavigateToId(directoryId, dispatch)
   }
   const handleSignOut = () => {

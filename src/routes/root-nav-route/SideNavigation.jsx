@@ -8,7 +8,7 @@ import {
   selectAllToggles,
   setToggleNotes,
 } from '../notes-route/features/notesSlice'
-import { handleNavigateToId } from '../../utils/halper-funtions/toggle'
+import { handleNavigateToId } from '../../utils/halper-funtions/helperFunctions'
 
 const SideNavigation = () => {
   const isSidebarOpen = useSelector(selectAllToggles).isSidebarOpen
@@ -19,6 +19,7 @@ const SideNavigation = () => {
 
   const handleModalDropdown = (directoryId) => {
     dispatch(setToggleNotes({ name: 'isChangesSaved' }))
+    //helperFunction.js
     handleNavigateToId(directoryId, dispatch)
   }
 
@@ -29,7 +30,7 @@ const SideNavigation = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    navigate('/notes/1')
+    navigate('/general')
   }, [])
 
   return (

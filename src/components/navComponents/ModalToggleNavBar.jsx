@@ -1,12 +1,13 @@
 import { useDispatch } from 'react-redux'
 import { setToggleNotes } from '../../routes/notes-route/features/notesSlice'
-import { handleNavigateToId } from '../../utils/halper-funtions/toggle'
+import { handleNavigateToId } from '../../utils/halper-funtions/helperFunctions'
 
 const ModalToggleNavBar = ({ content, directoryId,setDirectoryId}) => {
   const dispatch = useDispatch()
   const handleModalDropdown = () => {
     dispatch(setToggleNotes({ name: 'isChangesSaved' }))
     setDirectoryId(content.id)
+    //helperFunction.js
     handleNavigateToId(`notes/${content.id}`, dispatch)
   }
 

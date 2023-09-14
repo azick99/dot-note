@@ -1,5 +1,3 @@
-import { setNavigateTo } from '../../routes/notes-route/features/notesSlice'
-
 export const toggle = (state, directoryId, name) => {
   state.forEach((directory) => {
     if (directory.id === directoryId) {
@@ -16,5 +14,4 @@ export const toggle = (state, directoryId, name) => {
   })
 }
 
-export const handleNavigateToId = (id, dispatch) =>
-  dispatch(setNavigateTo(`/${id}`))
+
