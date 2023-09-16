@@ -28,11 +28,11 @@ const GeneralDirectoryList = ({ note, index }) => {
           general="general"
         />
       ) : (
-        <Link to={`/notes/${note.id}`}>🗒️{note.title}</Link>
+        <Link to={`/notes/${note.id}`} className='w-full'>🗒️{note.title}</Link>
       )}
 
       {isLayoutBigger ? '' : <p>{note.createdAt}</p>}
-      <div className="grid grid-cols-3 ">
+      <div className="general-note-buttons-cnt">
         {isLayoutBigger ? '' : <p className=" col-span-2">{note.createdBy}</p>}
 
         <div className="flex gap-4 justify-end relative z-10">

@@ -18,22 +18,37 @@ const directorySlice = createSlice({
     addNewDirectory(state, action) {
       const { id, title, directoryId, username } = action.payload
       const date = new Date()
-      const time = `${date.getHours()}:${date
-        .getMinutes()
-        .toString()}:${date.getSeconds()}`
-        
-      const newContent = {
-        id,
-        title,
-        createdAt: date.toDateString() + ' ' + time,
-        createdBy: username,
-        noteTitle: 'New page',
-        tags: 'new',
-        noteContent: '<p><br></p>',
-      }
+      const time = date
+        .toLocaleTimeString('en-US', {
+          hour12: false,
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+        })
+        .replace(/:/g, ':')
 
       state.forEach((directory) => {
         if (directory.id === directoryId) {
+          let newTitle = title
+
+          // Check if the title already exists in the directory
+          const titleExists = directory.content.some(
+            (content) => content.title === newTitle
+          )
+
+          if (titleExists) {
+            newTitle = `${title}(1)`
+          }
+          const newContent = {
+            id,
+            title: newTitle,
+            createdAt: date.toDateString() + ' ' + time,
+            createdBy: username,
+            noteTitle: 'New page',
+            tags: 'new',
+            noteContent: '<p><br></p>',
+          }
+
           directory.content.push(newContent)
         }
       })

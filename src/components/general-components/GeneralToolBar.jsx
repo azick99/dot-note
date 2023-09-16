@@ -3,6 +3,9 @@ import { BiGridSmall, BiSolidGridAlt } from 'react-icons/bi'
 import { MdKeyboardArrowDown } from 'react-icons/md'
 import { Link } from 'react-router-dom'
 import ListViewDropdown from './ListViewDropdown'
+import { useState } from 'react'
+import CustomInput from '../navComponents/CustomInput'
+import { useEffect } from 'react'
 
 const listOptions = [
   { id: 0, icon: <IoListSharp />, label: 'List' },
@@ -11,12 +14,49 @@ const listOptions = [
   // Add more list view options as needed
 ]
 
-const GeneralToolBar = ({index, setIndex}) => {
-
-
+const GeneralToolBar = ({
+  index,
+  setIndex,
+  setFilteredDirectories,
+  filteredDirectories,
+}) => {
+  const [isFilterInputOpen, setIsFilterInputOpen] = useState(false)
+  const [sortOrder, setSortOrder] = useState('not-sorted') // Add this state variable
+  const [filterInput, setFilterInput] = useState('')
   const handleListSelect = (selectedOption) => {
     // Handle the selected list view option
     setIndex(selectedOption.id)
+  }
+  const onFilterInputChange = (e) => {
+    setFilterInput(e.target.value)
+  }
+
+  const handleFilterToggle = () => {
+    setIsFilterInputOpen((prev) => !prev)
+    setFilterInput('')
+  }
+
+  useEffect(() => {
+    const newFilteredDirectories = filteredDirectories.filter((directory) =>
+      directory.title.toLocaleLowerCase().includes(filterInput)
+    )
+    setFilteredDirectories(newFilteredDirectories)
+  }, [filteredDirectories, filterInput])
+
+  const handleSortDirectories = () => {
+    // Toggle the sorting order based on sortOrder state
+    const newSortOrder = sortOrder === 'not-sorted' ? 'sorted' : 'not-sorted'
+
+    // Sort the directories based on the newSortOrder
+    const sortedDirectories = [...filteredDirectories].sort((a, b) => {
+      const dateA = new Date(a.createdAt)
+      const dateB = new Date(b.createdAt)
+      return newSortOrder === 'not-sorted' ? dateA - dateB : dateB - dateA
+    })
+
+    // Update the sortOrder and setFilteredDirectories
+    setSortOrder(newSortOrder)
+    setFilteredDirectories(sortedDirectories)
   }
 
   return (
@@ -27,10 +67,20 @@ const GeneralToolBar = ({index, setIndex}) => {
         onSelect={handleListSelect}
       />
       <ul className="flex gap-3 items-center ">
-        <li>
+        <li className="flex gap-5">
+          {isFilterInputOpen ? (
+            <CustomInput
+              placeholder="Title..."
+              value={filterInput}
+              onChange={onFilterInputChange}
+            />
+          ) : (
+            ''
+          )}
           <button
             type="button"
             className="trasition text-almost-dark/70 hover:text-almost-dark"
+            onClick={handleFilterToggle}
           >
             Filter
           </button>
@@ -38,7 +88,8 @@ const GeneralToolBar = ({index, setIndex}) => {
         <li>
           <button
             type="button"
-            className="trasition text-almost-dark/70 hover:text-almost-dark"
+            className={`${sortOrder === 'sorted' ? 'text-almost-dark font-semibold':'text-almost-dark/70'} trasition  hover:text-almost-dark`}
+            onClick={handleSortDirectories}
           >
             Sort
           </button>

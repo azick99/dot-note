@@ -4,10 +4,16 @@ import { selectAllDirectories } from '../root-nav-route/nav-features/directories
 import GeneralDirectoryList from '../../components/general-components/GeneralDirectoryList'
 import { useState } from 'react'
 import './general.style.css'
+
 const GeneralSection = () => {
-  const [index, setIndex] = useState(0)
   const directories = useSelector(selectAllDirectories)
   const notesDirectory = directories.find((d) => d.id === '1')
+  const [index, setIndex] = useState(0)
+  const [filteredDirectories, setFilteredDirectories] = useState(
+    notesDirectory.content
+  )
+
+  
   let notesLayout = 'list'
   //layout styles in general.styles.css
   if (index === 1) {
@@ -17,14 +23,17 @@ const GeneralSection = () => {
     notesLayout = 'large'
   }
   if (notesDirectory) {
-    const notesContent = notesDirectory.content
-    // Now, you can map through the content and display it
     return (
       <main className="flex flex-col gap-6 px-10 w-full">
         <h2 className=" text-lg">✅ All Tasks</h2>
-        <GeneralToolBar index={index} setIndex={setIndex} />
-        <div className={`${notesLayout} gap-2`}>
-          {notesContent.map((note) => {
+        <GeneralToolBar
+          index={index}
+          setIndex={setIndex}
+          setFilteredDirectories={setFilteredDirectories}
+          filteredDirectories={notesDirectory.content}
+        />
+        <div className={`${notesLayout} gap-3`}>
+          {filteredDirectories.map((note) => {
             return (
               <GeneralDirectoryList key={note.id} note={note} index={index} />
             )

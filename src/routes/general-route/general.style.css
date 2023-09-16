@@ -1,19 +1,21 @@
-.list{
+.list {
     @apply flex flex-col
 }
 
-.medium{
-    @apply grid grid-cols-6
+.medium {
+    @apply grid grid-cols-4
 }
-.large{
-    @apply grid grid-cols-3
-}
-
-.note-list{
-    @apply grid grid-cols-3
+.note-list,
+.general-note-buttons-cnt,
+.large {
+    @apply grid grid-cols-3 
 }
 
-.medium > .note-list,
-.large > .note-list{
-    @apply grid grid-cols-2
+.medium>.note-list,
+.large>.note-list {
+    @apply flex flex-col justify-center text-center gap-3 py-3 
+}
+.medium>.note-list > .general-note-buttons-cnt,
+.large>.note-list > .general-note-buttons-cnt {
+    @apply flex 
 }

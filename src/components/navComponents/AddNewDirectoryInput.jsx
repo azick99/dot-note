@@ -13,6 +13,7 @@ import {
   setToggleNotes,
 } from '../../routes/notes-route/features/notesSlice'
 import EditButton from '../buttons/EditButton'
+import CustomInput from './CustomInput'
 
 const AddNewDirectoryInput = ({ directory, setDirectoryId }) => {
   const [directoryTitle, setDirectoryTitle] = useState('')
@@ -89,12 +90,12 @@ const AddNewDirectoryInput = ({ directory, setDirectoryId }) => {
       <div className="flex gap-2 pl-6 p-2">
         <input
           type="text"
+          className="bg-white border-light-grayish border-solid border-[2px] rounded-md w-[8rem] transition px-2 font-medium outline-none"
           value={directoryTitle} // Use value prop to reflect the state in the input field
           onChange={(e) => setDirectoryTitle(e.target.value)}
           placeholder="Add new note..."
           onBlur={handleCancelBlur}
           ref={inputRef}
-          className="bg-white border-light-grayish border-solid border-[2px] rounded-md w-[8rem] transition px-2 font-medium outline-none"
         />
         <EditButton aria-label="add new title" onClick={handleAddClick}>
           Add
