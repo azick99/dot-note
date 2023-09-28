@@ -1,36 +1,41 @@
-import { IoListSharp, IoSearch } from 'react-icons/io5'
-import { BiGridSmall, BiSolidGridAlt } from 'react-icons/bi'
-import { MdKeyboardArrowDown } from 'react-icons/md'
+import { IoSearch } from 'react-icons/io5'
 import { Link } from 'react-router-dom'
 import ListViewDropdown from './ListViewDropdown'
 import { useState } from 'react'
 import CustomInput from '../navComponents/CustomInput'
 import { useEffect } from 'react'
-
-const listOptions = [
-  { id: 0, icon: <IoListSharp />, label: 'List' },
-  { id: 1, icon: <BiGridSmall />, label: 'Medium' },
-  { id: 2, icon: <BiSolidGridAlt />, label: 'Large' },
-  // Add more list view options as needed
-]
+import { listOptions } from '../../data/dropdownOptions'
+import GeneralAddNewDropdown from './GeneralAddNewDropdown'
 
 const GeneralToolBar = ({
-  index,
-  setIndex,
+  optionsIndex,
+  setOptionsIndex,
   setFilteredDirectories,
   filteredDirectories,
 }) => {
   const [isFilterInputOpen, setIsFilterInputOpen] = useState(false)
   const [sortOrder, setSortOrder] = useState('not-sorted') // Add this state variable
   const [filterInput, setFilterInput] = useState('')
+
   const handleListSelect = (selectedOption) => {
     // Handle the selected list view option
-    setIndex(selectedOption.id)
+    setOptionsIndex({
+      ...optionsIndex,
+      layoutIndex: selectedOption.id,
+    })
   }
+
+  const handleAddNewSelect = (selectedOption) => {
+    setOptionsIndex({
+      ...optionsIndex,
+      newTaskIndex: selectedOption.id,
+    })
+  }
+  const { layoutIndex } = optionsIndex
+
   const onFilterInputChange = (e) => {
     setFilterInput(e.target.value)
   }
-
   const handleFilterToggle = () => {
     setIsFilterInputOpen((prev) => !prev)
     setFilterInput('')
@@ -59,10 +64,14 @@ const GeneralToolBar = ({
     setFilteredDirectories(sortedDirectories)
   }
 
+  {
+    /*listOptions on data folder*/
+  }
+
   return (
     <div className="container flex px-2 justify-between w-full border-b border-solid border-almost-dark/70 pb-3">
       <ListViewDropdown
-        selectedOption={listOptions[index]}
+        selectedOption={listOptions[layoutIndex]}
         options={listOptions}
         onSelect={handleListSelect}
       />
@@ -88,7 +97,11 @@ const GeneralToolBar = ({
         <li>
           <button
             type="button"
-            className={`${sortOrder === 'sorted' ? 'text-almost-dark font-semibold':'text-almost-dark/70'} trasition  hover:text-almost-dark`}
+            className={`${
+              sortOrder === 'sorted'
+                ? 'text-almost-dark font-semibold'
+                : 'text-almost-dark/70'
+            } trasition  hover:text-almost-dark`}
             onClick={handleSortDirectories}
           >
             Sort
@@ -102,15 +115,7 @@ const GeneralToolBar = ({
             <IoSearch />
           </Link>
         </li>
-        <li>
-          <button
-            type="button"
-            className="flex p-2 hover:bg-primery  bg-primery/80 text-white items-center rounded-md text-sm transition"
-          >
-            <span className=" border-r border-white pr-2">New</span>
-            <MdKeyboardArrowDown className="ml-1" />
-          </button>
-        </li>
+        <GeneralAddNewDropdown onSelect={handleAddNewSelect} />
       </ul>
     </div>
   )

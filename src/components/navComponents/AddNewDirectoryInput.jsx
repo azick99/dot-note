@@ -13,7 +13,6 @@ import {
   setToggleNotes,
 } from '../../routes/notes-route/features/notesSlice'
 import EditButton from '../buttons/EditButton'
-import CustomInput from './CustomInput'
 
 const AddNewDirectoryInput = ({ directory, setDirectoryId }) => {
   const [directoryTitle, setDirectoryTitle] = useState('')
@@ -37,7 +36,7 @@ const AddNewDirectoryInput = ({ directory, setDirectoryId }) => {
         directoryId,
         name: 'addDropdown',
       })
-    )
+    ) 
     setTimeout(() => {
       if (inputRef.current) {
         inputRef.current.focus()

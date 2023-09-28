@@ -4,8 +4,6 @@ import GeneralSection from './GeneralSection'
 import { FcHome } from 'react-icons/fc'
 
 const General = () => {
-  const date = new Date()
-  console.log(date.getSeconds())
   return (
     <WrapSections>
       <Header

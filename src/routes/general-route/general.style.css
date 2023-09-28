@@ -5,17 +5,25 @@
 .medium {
     @apply grid grid-cols-4
 }
-.note-list,
-.general-note-buttons-cnt,
+
+.directory-list,
+.general-directory-buttons-cnt,
 .large {
-    @apply grid grid-cols-3 
+    @apply grid grid-cols-3
 }
 
-.medium>.note-list,
-.large>.note-list {
-    @apply flex flex-col justify-center text-center gap-3 py-3 
+.medium>.directory-list,
+.large>.directory-list {
+    @apply flex flex-col justify-center text-center gap-3 py-3
 }
-.medium>.note-list > .general-note-buttons-cnt,
-.large>.note-list > .general-note-buttons-cnt {
-    @apply flex 
+
+.medium>.directory-list>.general-directory-buttons-cnt,
+.large>.directory-list>.general-directory-buttons-cnt {
+    @apply flex
+}
+
+
+.medium>.general-input,
+.large>.general-input {
+    @apply flex-col
 }

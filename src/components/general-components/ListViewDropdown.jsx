@@ -1,32 +1,9 @@
-import { useState, useRef, useEffect } from 'react'
 import { MdKeyboardArrowDown } from 'react-icons/md'
+import { useGeneralDropdown } from '../../hooks/useGeneralDropdown'
 
 const ListViewDropdown = ({ selectedOption, options, onSelect }) => {
-  const [isOpen, setIsOpen] = useState(false)
-  const dropdownRef = useRef(null)
-
-  const toggleDropdown = () => {
-    setIsOpen(!isOpen)
-  }
-
-  const handleOptionClick = (option) => {
-    onSelect(option)
-    setIsOpen(false)
-  }
-
-  const handleClickOutside = (event) => {
-    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-      setIsOpen(false)
-    }
-  }
-
-  useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside)
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
-    }
-  }, [])
+  const [toggleDropdown, handleOptionClick, dropdownRef, isOpen] =
+    useGeneralDropdown(onSelect)
 
   return (
     <div className="relative bg-white z-10" ref={dropdownRef}>
@@ -42,7 +19,7 @@ const ListViewDropdown = ({ selectedOption, options, onSelect }) => {
       {isOpen && (
         <ul className="flex absolute mt-2 p-2 bg-white border border-gray-300 rounded shadow-lg ">
           {options.map((option) => (
-            <li key={option.value}>
+            <li key={option.id}>
               <button
                 type="button"
                 className={`${

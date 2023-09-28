@@ -8,44 +8,50 @@ import { useState } from 'react'
 import EditDirectoryInput from '../navComponents/EditDirectoryInput'
 import { Link } from 'react-router-dom'
 
-const GeneralDirectoryList = ({ note, index }) => {
+const GeneralDirectoryList = ({ directory, layoutIndex }) => {
   const [editDirectoryId, setEditDirectoryId] = useState('')
   const dispatch = useDispatch()
-  const isLayoutBigger = index === 1 || index === 2
-  const handleRemoveClick = () => dispatch(handleRemoveDirectory(note.id))
+  const isLayoutBigger = layoutIndex === 1 || layoutIndex === 2
+  const handleRemoveClick = () => dispatch(handleRemoveDirectory(directory.id))
 
   const handleEditClickId = () =>
     editDirectoryId === ''
-      ? setEditDirectoryId(note.id)
+      ? setEditDirectoryId(directory.id)
       : setEditDirectoryId('')
 
   return (
-    <div className="note-list items-center border border-solid rounded-md p-1 px-3 relative hover:border-sky-700 transition ">
-      {editDirectoryId === note.id ? (
+    <div className="directory-list items-center border border-solid rounded-md p-1 px-3 relative hover:border-sky-700 transition ">
+      {editDirectoryId === directory.id ? (
         <EditDirectoryInput
-          content={note}
+          content={directory}
           setEditDirectoryId={setEditDirectoryId}
           general="general"
         />
       ) : (
-        <Link to={`/notes/${note.id}`} className='w-full'>🗒️{note.title}</Link>
+        <Link to={`/notes/${directory.id}`} className="w-full">
+          🗒️{directory.title}
+        </Link>
       )}
 
-      {isLayoutBigger ? '' : <p>{note.createdAt}</p>}
-      <div className="general-note-buttons-cnt">
-        {isLayoutBigger ? '' : <p className=" col-span-2">{note.createdBy}</p>}
+      {isLayoutBigger ? '' : <p>{directory.createdAt}</p>}
+      <div className="general-directory-buttons-cnt">
+        {isLayoutBigger ? (
+          ''
+        ) : (
+          <p className=" col-span-2">{directory.createdBy}</p>
+        )}
 
         <div className="flex gap-4 justify-end relative z-10">
           <EditButton
             title="general-edit"
-            aria-label="edit note title"
+            aria-label="edit directory title"
             onClick={handleEditClickId}
           >
             <FontAwesomeIcon icon={faPenToSquare} className="h-3 w-3" />
           </EditButton>
           <EditButton
             title="general-edit"
-            aria-label="remove note"
+            aria-label="remove directory"
             onClick={handleRemoveClick}
           >
             <BsTrashFill className="w-3 h-3" />
