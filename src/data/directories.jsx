@@ -1,6 +1,6 @@
 export const directories = [
   {
-    id: '1',
+    id: '0',
     title: '🗒️Notes',
     isDirectoryOpen: true,
     file: 'note',
@@ -27,7 +27,7 @@ export const directories = [
     ],
   },
   {
-    id: '2',
+    id: '1',
     title: '🎒To-Do',
     isDirectoryOpen: false,
     file: 'todo',
@@ -35,7 +35,7 @@ export const directories = [
     content: [],
   },
   {
-    id: '3',
+    id: '2',
     title: '🗃️Git Hub MarkDown',
     isDirectoryOpen: false,
     file: 'markdown',

@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 import { AiFillFileAdd } from 'react-icons/ai'
 import { useDispatch, useSelector } from 'react-redux'
 import {
@@ -13,9 +13,11 @@ import {
   setToggleNotes,
 } from '../../routes/notes-route/features/notesSlice'
 import EditButton from '../buttons/EditButton'
+import { useInputRef } from '../../hooks/useInputRef'
 
 const AddNewDirectoryInput = ({ directory, setDirectoryId }) => {
   const [directoryTitle, setDirectoryTitle] = useState('')
+  const [inputRef, onFocusInput] = useInputRef()
   const toggles = useSelector(selectAllToggles)
   const userData = useSelector(selectUserData)
   const username = userData ? userData?.displayName : 'unknown'
@@ -24,7 +26,6 @@ const AddNewDirectoryInput = ({ directory, setDirectoryId }) => {
 
   const navigate = useNavigate()
 
-  const inputRef = useRef(null)
   const dispatch = useDispatch()
 
   // Make it simple because I use it here a lot
@@ -36,12 +37,8 @@ const AddNewDirectoryInput = ({ directory, setDirectoryId }) => {
         directoryId,
         name: 'addDropdown',
       })
-    ) 
-    setTimeout(() => {
-      if (inputRef.current) {
-        inputRef.current.focus()
-      }
-    }, 0)
+    )
+    onFocusInput()
   }
 
   const cancelDisptach = () => {

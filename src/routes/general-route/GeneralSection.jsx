@@ -1,14 +1,19 @@
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import GeneralToolBar from '../../components/general-components/GeneralToolBar'
-import { selectAllDirectories } from '../root-nav-route/nav-features/directoriesSlice'
+import {
+  addNewDirectory,
+  selectAllDirectories,
+} from '../root-nav-route/nav-features/directoriesSlice'
 import GeneralDirectoryList from '../../components/general-components/GeneralDirectoryList'
 import { useState } from 'react'
 import { newAddOptions } from '../../data/dropdownOptions'
 import './general.style.css'
+import { nanoid } from '@reduxjs/toolkit'
+import { selectUserData } from '../notes-route/features/notesSlice'
 
 const GeneralSection = () => {
   const directories = useSelector(selectAllDirectories)
-  const notesDirectory = directories.find((d) => d.id === '1')
+  const notesDirectory = directories.find((d) => d.id === '0')
   const [optionsIndex, setOptionsIndex] = useState({
     layoutIndex: 0,
     newTaskIndex: 'no id',
@@ -16,9 +21,31 @@ const GeneralSection = () => {
   const [filteredDirectories, setFilteredDirectories] = useState(
     notesDirectory?.content
   )
-
+  const [directoryTitle, setDirectoryTitle] = useState('')
   const { layoutIndex, newTaskIndex } = optionsIndex
-  console.log(newTaskIndex)
+
+  const userData = useSelector(selectUserData)
+  const username = userData ? userData?.displayName : 'unknown'
+
+  const dispatch = useDispatch()
+  const directoryId = notesDirectory?.id
+
+  const handleAddNewDirectory = () => {
+    const id = nanoid()
+
+    if (directoryTitle) {
+      dispatch(
+        addNewDirectory({ id, title: directoryTitle, directoryId, username })
+      )
+    }
+    setDirectoryTitle('')
+    setOptionsIndex({ ...optionsIndex, newTaskIndex: 'no id' })
+  }
+
+  const cancelAddInput = () => {
+    setOptionsIndex({ ...optionsIndex, newTaskIndex: 'no id' })
+    setDirectoryTitle('')
+  }
 
   let notesLayout = 'list'
   //layout styles in general.styles.css
@@ -56,16 +83,22 @@ const GeneralSection = () => {
           <input
             type="text"
             className="border p-1 border-solid rounded-md border-almost-dark/30 focus:border-almost-dark outline-none w-full basis-[60%]"
+            value={directoryTitle} // Use value prop to reflect the state in the input field
+            onChange={(e) => setDirectoryTitle(e.target.value)}
+            placeholder={`Add new ${newAddOptions[newTaskIndex].title}...`}
           />
           <div className="grid grid-cols-3 w-full gap-3 basis-[40%]">
-            <button className="col-span-2 p-2 hover:bg-primery bg-primery/80 text-white items-center rounded-md text-sm transition">
-              {`Add New ${newAddOptions[newTaskIndex].title}`} 
+            <button
+              className="col-span-2 p-2 hover:bg-primery bg-primery/80 text-white items-center rounded-md text-sm transition"
+              type="button"
+              aria-label="add button"
+              onClick={handleAddNewDirectory}
+            >
+              {`Add New ${newAddOptions[newTaskIndex].title}`}
             </button>
             <button
               className="p-2 hover:bg-primery  bg-primery/80 text-white items-center rounded-md text-sm transition"
-              onClick={() =>
-                setOptionsIndex({ ...optionsIndex, newTaskIndex: 'no id' })
-              }
+              onClick={cancelAddInput}
             >
               X
             </button>
